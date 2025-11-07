@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import email from "../assets/sms.png";
 import phone from "../assets/call-calling.png";
-import facebook from "../assets/fLogo.png";
-import instagram from "../assets/iLogo.png";
-import telegram from "../assets/tLogo.png";
-import twitter from "../assets/xLogo.png";
+import facebook from "../assets/Abden Icon/facebook_Gold.svg";
+import linkedin from "../assets/Abden Icon/linkedin_gold.svg";
+// Removed local Facebook and LinkedIn icon imports
 </script>
 <template>
   <div
@@ -25,10 +24,11 @@ import twitter from "../assets/xLogo.png";
     </div>
     <!-- Right: Social Icons -->
     <div class="flex flex-row items-center space-x-10">
-      <img :src="twitter" alt="twitter" class="h-5 w-auto cursor-pointer" />
       <img :src="facebook" alt="facebook" class="h-5 w-auto cursor-pointer" />
-      <img :src="telegram" alt="telegram" class="h-5 w-auto cursor-pointer" />
-      <img :src="instagram" alt="instagram" class="h-5 w-auto cursor-pointer" />
+      <img :src="linkedin" alt="linkedin" class="h-5 w-auto cursor-pointer" />
+
+      <!-- <img :src="telegram" alt="telegram" class="h-5 w-auto cursor-pointer" />
+      <img :src="instagram" alt="instagram" class="h-5 w-auto cursor-pointer" /> -->
     </div>
   </div>
 </template>

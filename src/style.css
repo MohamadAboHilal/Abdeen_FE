@@ -1,1 +1,32 @@
 @import "tailwindcss";
+
+/* Enable smooth in-page navigation for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/*
+  Offset anchor scroll so elements targeted by links (e.g. #hero, #about)
+  are not hidden behind the sticky navbar. Adjust --navbar-height if your
+  header height changes.
+*/
+:root {
+  --navbar-height: 4rem; /* matches header max-h-16 (64px). Change if needed */
+}
+
+/* Apply to the sections targeted by the navbar links. Using explicit IDs
+   avoids globally changing behavior for every element with an id. */
+#hero,
+#about,
+#services,
+#clients,
+#contact {
+  scroll-margin-top: var(--navbar-height);
+}
+
+/* For small screens the header may be taller (padding + menu). Increase offset */
+@media (max-width: 1024px) {
+  :root {
+    --navbar-height: 5.25rem; /* ~84px for mobile when header grows */
+  }
+}

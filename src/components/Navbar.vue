@@ -11,10 +11,10 @@ import TopNav from "./TopNav.vue";
 
 const activeLink = ref("Home");
 const navLinks = [
-  { name: "Home", href: "#" },
-  { name: "About Us", href: "#" },
-  { name: "Mission", href: "#" },
-  { name: "Values", href: "#" },
+  { name: "Home", href: "#hero" },
+  { name: "About Us", href: "#about" },
+  { name: "Services", href: "#services" },
+  { name: "Clients", href: "#clients" },
 ];
 
 const mobileMenuOpen = ref(false);
@@ -24,35 +24,39 @@ function toggleMobileMenu() {
 </script>
 
 <template>
-  <div>
+  <header class="sticky top-0 z-2000 bg-white shadow-sm">
     <TopNav />
+
     <div
-      class="flex flex-row items-center justify-between w-full px-4 py-4 max-h-20"
+      class="flex flex-row items-center justify-between w-full px-4 py-4 max-h-16"
     >
-      <img :src="logo" alt="Abdeen Logo" class="h-12 w-auto ml-8" />
+      <img :src="logo" alt="Abdeen Logo" class="h-10 w-auto ml-8" />
+
       <!-- Desktop Nav -->
       <div class="hidden lg:flex flex-row items-center space-x-8 mr-8">
         <a
           v-for="link in navLinks"
           :key="link.name"
           :href="link.href"
-          @click.prevent="activeLink = link.name"
+          @click="activeLink = link.name"
           :class="[
-            'text-2xl font-semibold text-[#202B43] hover:text-[#ECC06F] transition-colors',
+            'text-xl font-semibold text-[#202B43] hover:text-[#ECC06F] transition-colors',
             activeLink === link.name
               ? 'underline decoration-4 underline-offset-8 text-[#ECC06F]'
               : '',
           ]"
+          >{{ link.name }}</a
         >
-          {{ link.name }}
-        </a>
-        <button
-          class="bg-[#1D2B62] text-white px-4 py-2 rounded-md font-medium hover:bg-[#ECC06F] transition-colors"
+
+        <a
+          href="#contact"
+          class="bg-[#1D2B62] text-white px-4 py-2 rounded-md font-medium hover:bg-[#ECC06F] transition-colors inline-flex items-center"
         >
           Contact Us
-        </button>
+        </a>
       </div>
-      <!-- Hamburger Icon (Mobile) -->
+
+      <!-- Hamburger (Mobile) -->
       <button
         class="lg:hidden flex items-center justify-center mr-8"
         @click="toggleMobileMenu"
@@ -63,7 +67,6 @@ function toggleMobileMenu() {
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
         >
           <path
             stroke-linecap="round"
@@ -74,16 +77,17 @@ function toggleMobileMenu() {
         </svg>
       </button>
     </div>
-    <!-- Mobile Menu Dropdown -->
+
+    <!-- Mobile Menu Dropdown (positioned under the header) -->
     <div
       v-if="mobileMenuOpen"
-      class="lg:hidden bg-white shadow-lg px-8 py-4 flex flex-col space-y-4 items-center justify-center"
+      class="lg:hidden absolute left-0 right-0 top-full bg-white shadow-lg px-8 py-4 flex flex-col space-y-4 items-center justify-center"
     >
       <a
         v-for="link in navLinks"
         :key="link.name"
         :href="link.href"
-        @click.prevent="
+        @click="
           activeLink = link.name;
           mobileMenuOpen = false;
         "
@@ -93,20 +97,21 @@ function toggleMobileMenu() {
             ? 'underline decoration-4 underline-offset-8 text-[#ECC06F]'
             : '',
         ]"
+        >{{ link.name }}</a
       >
-        {{ link.name }}
-      </a>
-      <button
-        class="bg-[#1D2B62] text-white px-4 py-2 rounded-md font-medium hover:bg-[#ECC06F] transition-colors w-full overflow-hidden"
+
+      <a
+        href="#contact"
+        class="bg-[#1D2B62] text-white px-4 py-2 rounded-md font-medium hover:bg-[#ECC06F] transition-colors w-full flex items-center justify-center"
         @click="mobileMenuOpen = false"
       >
         Contact Us
-      </button>
+      </a>
 
+      <!-- Contact & socials (mobile only) -->
       <div
         class="md:hidden flex flex-col items-center justify-center w-full text-[#ECC06F] text-base"
       >
-        <!-- Email and Phone -->
         <div class="flex flex-col items-center space-y-2 mb-4 text-center">
           <div class="flex flex-row items-center space-x-2">
             <img :src="email" alt="email" class="h-5 w-auto" />
@@ -116,12 +121,11 @@ function toggleMobileMenu() {
           </div>
           <div class="flex flex-row items-center space-x-2">
             <img :src="phone" alt="phone" class="h-5 w-auto" />
-            <a href="tel:+96433327456" class="text-[#202B43] text-lg">
-              +964 33327456
-            </a>
+            <a href="tel:+96433327456" class="text-[#202B43] text-lg"
+              >+964 33327456</a
+            >
           </div>
         </div>
-        <!-- Social Icons -->
         <div class="flex flex-row items-center justify-center space-x-6">
           <img :src="twitter" alt="twitter" class="h-5 w-auto cursor-pointer" />
           <img
@@ -142,5 +146,5 @@ function toggleMobileMenu() {
         </div>
       </div>
     </div>
-  </div>
+  </header>
 </template>

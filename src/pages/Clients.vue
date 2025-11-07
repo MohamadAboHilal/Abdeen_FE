@@ -3,8 +3,8 @@ import ClientsCarousel from "../components/ClientsCarousel.vue";
 </script>
 
 <template>
-  <div class="mt-20 mb-12">
-    <div class="shadow-[0_-4px_6px_rgba(0,0,0,0.1),0_4px_6px_rgba(0,0,0,0.1)]">
+  <div id="clients" class="mt-20 mb-12">
+    <div class="shadow-[0_0_40px_10px_rgba(0,0,0,0.08)]">
       <div
         class="flex flex-col items-center justify-center relative z-10 px-4 max-w-7xl mx-auto"
       >

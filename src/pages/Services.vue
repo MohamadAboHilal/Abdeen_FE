@@ -3,7 +3,10 @@ import feather from "../assets/Abden Icon/ريشة.svg";
 import ServicesCard from "../components/ServicesCard.vue";
 </script>
 <template>
-  <div class="relative bg-[#1f2839] h-auto w-full overflow-hidden pb-12">
+  <div
+    id="services"
+    class="relative bg-[#1f2839] h-auto w-full overflow-hidden pb-12"
+  >
     <!-- Large feather background -->
     <img
       :src="feather"

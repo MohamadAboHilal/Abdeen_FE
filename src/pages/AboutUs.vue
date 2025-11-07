@@ -7,6 +7,7 @@ import AboutUsBanner from "../components/AboutUsBanner.vue";
 <template>
   <div>
     <section
+      id="about"
       class="relative flex flex-col lg:flex-row items-start justify-between w-auto md:ml-12 mx-auto px-6 py-24"
     >
       <!-- Left Text Content -->
@@ -16,7 +17,7 @@ import AboutUsBanner from "../components/AboutUsBanner.vue";
           <span class="ml-2 text-[#ECC06F]">—</span>
         </p>
 
-        <h2 class="text-5xl md:text-6xl font-semibold text-[#202F66] mb-6">
+        <h2 class="text-4xl md:text-5xl font-semibold text-[#202F66] mb-6">
           Leading Syrian Law Firm
         </h2>
 

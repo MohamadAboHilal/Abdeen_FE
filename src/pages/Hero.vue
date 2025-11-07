@@ -7,6 +7,7 @@ import badge from "../assets/Abden Icon/badge.svg";
 
 <template>
   <section
+    id="hero"
     class="relative flex h-10/12 w-full items-start justify-start bg-[#171B27] text-white overflow-hidden"
   >
     <!-- Background image -->
@@ -31,13 +32,13 @@ import badge from "../assets/Abden Icon/badge.svg";
       </div>
 
       <h2
-        class="text-5xl text-center md:text-start md:text-7xl font-semibold pt-12 leading-tight"
+        class="text-4xl text-center md:text-start md:text-6xl font-semibold pt-12 leading-tight"
       >
         Abdeen Law Firm and Legal Consultancy
       </h2>
 
       <p
-        class="text-2xl text-center md:text-start md:text-3xl pt-12 font-medium max-w-4xl"
+        class="text-xl text-center md:text-start md:text-2xl pt-12 font-medium max-w-4xl"
       >
         For the most reliable and secure legal consultations, contact Abdeen Law
         Firm and Legal Consultancy in
@@ -78,16 +79,23 @@ import badge from "../assets/Abden Icon/badge.svg";
       <div
         class="flex flex-col md:flex-row pt-36 space-x-0 md:space-x-4 mb-20 space-y-4 md:space-y-0"
       >
-        <button
-          class="bg-[#ECC06F] text-white font-semibold text-[20px] py-4 px-3 rounded-[10px] w-full md:w-auto"
+        <a
+          href="#contact"
+          role="button"
+          aria-label="Go to contact section"
+          class="bg-[#ECC06F] text-white font-semibold text-[20px] py-4 px-3 rounded-[10px] w-full md:w-auto inline-flex items-center justify-center"
         >
           Get Logical Consultation
-        </button>
-        <button
-          class="bg-transparent border-4 text-white font-semibold text-[20px] py-4 px-3 rounded-[10px] w-full md:w-auto"
+        </a>
+
+        <a
+          href="#about"
+          role="button"
+          aria-label="Go to about section"
+          class="bg-transparent border-4 text-white font-semibold text-[20px] py-4 px-3 rounded-[10px] w-full md:w-auto inline-flex items-center justify-center"
         >
           Learn More
-        </button>
+        </a>
       </div>
     </div>
   </section>
