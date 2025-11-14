@@ -38,3 +38,8 @@ html {
 body {
   font-family: "Open Sans", sans-serif;
 }
+
+[dir="rtl"] .ltr-number {
+  direction: ltr;
+  unicode-bidi: bidi-override;
+}

@@ -3,6 +3,8 @@ import fairMansion from "../assets/Abden Icon/fairMansion.png";
 import scale from "../assets/Abden Icon/Leading Expertise.svg";
 import smallScale from "../assets/Abden Icon/small_scale.svg";
 import badge from "../assets/Abden Icon/badge.svg";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 </script>
 
 <template>
@@ -27,23 +29,22 @@ import badge from "../assets/Abden Icon/badge.svg";
         <span
           class="text-xl md:text-2xl font-semibold text-[#ECC06F] tracking-wide"
         >
-          Trusted Legal Excellence
+          {{ t("hero.miniTitle") }}
         </span>
       </div>
 
       <h2
         class="text-4xl text-center md:text-start md:text-6xl font-semibold pt-12 leading-tight"
       >
-        Abdeen Law Firm and Legal Consultancy
+        {{ t("hero.title") }}
       </h2>
 
       <p
         class="text-xl text-center md:text-start md:text-2xl pt-12 font-medium max-w-4xl"
       >
-        For the most reliable and secure legal consultations, contact Abdeen Law
-        Firm and Legal Consultancy in
-        <span class="text-[#ECC06F]">Syria</span>. Serving numerous local and
-        international companies since 1996.
+        {{ t("hero.description") }}
+        <span class="text-[#ECC06F]">{{ t("hero.span") }}</span
+        >{{ t("hero.restDescription") }}
       </p>
 
       <div class="flex flex-col md:flex-row flex-wrap gap-12 pt-12">
@@ -55,8 +56,8 @@ import badge from "../assets/Abden Icon/badge.svg";
             <img :src="badge" alt="badge" class="h-8 w-8 text-[#ECC06F]" />
           </div>
           <div class="text-xl md:text-2xl font-semibold leading-snug">
-            <p>Proven Track Record</p>
-            <p class="font-normal text-gray-100">Established in 1996</p>
+            <p>{{ t("hero.track") }}</p>
+            <p class="font-normal text-gray-100">{{ t("hero.established") }}</p>
           </div>
         </div>
 
@@ -71,8 +72,10 @@ import badge from "../assets/Abden Icon/badge.svg";
             />
           </div>
           <div class="text-xl md:text-2xl font-semibold leading-snug">
-            <p>Proven Track Record</p>
-            <p class="font-normal text-gray-100">Established in 1996</p>
+            <p>{{ t("hero.expertise") }}</p>
+            <p class="font-normal text-gray-100">
+              {{ t("hero.top") }}
+            </p>
           </div>
         </div>
       </div>
@@ -85,7 +88,7 @@ import badge from "../assets/Abden Icon/badge.svg";
           aria-label="Go to contact section"
           class="bg-[#ECC06F] text-white font-semibold text-[20px] py-4 px-3 rounded-[10px] w-full md:w-auto inline-flex items-center justify-center"
         >
-          Get Logical Consultation
+          {{ t("hero.button1") }}
         </a>
 
         <a
@@ -94,7 +97,7 @@ import badge from "../assets/Abden Icon/badge.svg";
           aria-label="Go to about section"
           class="bg-transparent border-4 text-white font-semibold text-[20px] py-4 px-3 rounded-[10px] w-full md:w-auto inline-flex items-center justify-center"
         >
-          Learn More
+          {{ t("hero.button2") }}
         </a>
       </div>
     </div>

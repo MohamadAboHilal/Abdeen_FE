@@ -1,6 +1,16 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useI18n } from "vue-i18n";
 import Map from "../components/Map.vue";
+
+const { t, locale } = useI18n();
+
+// compute alignment classes based on active locale (Arabic -> RTL)
+const headingAlignClass = computed(() =>
+  locale.value === "ar"
+    ? "text-center lg:text-right"
+    : "text-center lg:text-left"
+);
 
 // Simple form state
 const name = ref("");
@@ -15,7 +25,8 @@ function onSubmit() {
     phone: phone.value,
     message: message.value,
   });
-  // clear form after submit
+
+  // clear form
   name.value = "";
   email.value = "";
   phone.value = "";
@@ -30,31 +41,31 @@ function onSubmit() {
       <h1
         class="text-2xl sm:text-3xl md:text-4xl font-semibold text-[#ECC06F] text-center"
       >
-        <span class="mx-4 text-[#ECC06F]">—</span>Contact Us<span
-          class="mx-4 text-[#ECC06F]"
-          >—</span
-        >
+        <span class="mx-4 text-[#ECC06F]">—</span>
+        {{ t("contact.title") }}
+        <span class="mx-4 text-[#ECC06F]">—</span>
       </h1>
+
       <p
-        class="text-[#120E08] font-normal pt-2 pb-6 text-xl md:text-2xl text-center wrap-break-word whitespace-normal"
+        class="text-[#120E08] font-normal pt-2 pb-6 text-xl md:text-2xl text-center"
       >
-        Reach out today and let our experts guide you with reliable legal
-        insight and strategic solutions.
+        {{ t("contact.subtitle") }}
       </p>
 
-      <!-- Main content -->
       <div
         class="flex flex-col lg:flex-row items-start justify-between gap-12 lg:gap-16"
       >
         <!-- Left: Map + Info -->
         <div class="w-full lg:w-1/2 flex flex-col">
           <h2
-            class="text-2xl sm:text-3xl font-semibold mb-4 text-[#202F66] text-center lg:text-left"
+            :class="[
+              'text-2xl sm:text-3xl font-semibold mb-4 text-[#202F66]',
+              headingAlignClass,
+            ]"
           >
-            Where You Can Find Us
+            {{ t("contact.findUs") }}
           </h2>
 
-          <!-- Responsive map -->
           <div
             class="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] rounded-xl overflow-hidden shadow-lg"
           >
@@ -65,9 +76,12 @@ function onSubmit() {
         <!-- Right: Contact Form -->
         <div class="w-full lg:w-1/2">
           <h2
-            class="text-2xl sm:text-3xl font-semibold mb-6 text-[#202F66] text-center lg:text-left"
+            :class="[
+              'text-2xl sm:text-3xl font-semibold mb-6 text-[#202F66]',
+              headingAlignClass,
+            ]"
           >
-            Contact Us To Get Legal Consultation
+            {{ t("contact.formTitle") }}
           </h2>
 
           <form @submit.prevent="onSubmit" class="space-y-4">
@@ -76,13 +90,13 @@ function onSubmit() {
               <input
                 v-model="name"
                 type="text"
-                placeholder="Name"
+                :placeholder="t('contact.fields.name')"
                 class="w-full rounded-lg bg-[#ECEEF9] p-4 shadow-sm placeholder-[#202F66] placeholder:opacity-75 placeholder:font-semibold focus:outline-none focus:ring-2 focus:ring-[#ECC06F]"
               />
               <input
                 v-model="email"
                 type="email"
-                placeholder="E-Mail"
+                :placeholder="t('contact.fields.email')"
                 class="w-full rounded-lg bg-[#ECEEF9] p-4 shadow-sm placeholder-[#202F66] placeholder:opacity-75 placeholder:font-semibold focus:outline-none focus:ring-2 focus:ring-[#ECC06F]"
               />
             </div>
@@ -91,15 +105,15 @@ function onSubmit() {
             <input
               v-model="phone"
               type="tel"
-              placeholder="Phone Number"
+              :placeholder="t('contact.fields.phone')"
               class="w-full rounded-lg bg-[#ECEEF9] p-4 shadow-sm placeholder-[#202F66] placeholder:opacity-75 placeholder:font-semibold focus:outline-none focus:ring-2 focus:ring-[#ECC06F]"
             />
 
             <!-- Message -->
             <textarea
               v-model="message"
-              placeholder="Your Message"
               rows="6"
+              :placeholder="t('contact.fields.message')"
               class="w-full rounded-lg bg-[#ECEEF9] p-4 shadow-sm resize-none placeholder-[#202F66] placeholder:opacity-75 placeholder:font-semibold focus:outline-none focus:ring-2 focus:ring-[#ECC06F]"
             ></textarea>
 
@@ -109,7 +123,7 @@ function onSubmit() {
                 type="submit"
                 class="bg-[#ECC06F] text-white font-semibold px-8 py-3 rounded-lg shadow-md hover:opacity-90 transition"
               >
-                Send
+                {{ t("contact.send") }}
               </button>
             </div>
           </form>

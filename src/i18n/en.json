@@ -1,0 +1,103 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "services": "Services",
+    "clients": "Clients",
+    "contact": "Contact Us"
+  },
+  "hero": {
+    "miniTitle": "Trusted Legal Excellence",
+    "title": "Abdeen Law Firm and Legal Consultancy",
+    "description": "For the most reliable and secure legal consultations, contact Abdeen Law Firm and Legal Consultancy in ",
+    "span": "Syria",
+    "restDescription": ". Serving numerous local and international companies since 1996.",
+    "track": "Proven Track Record",
+    "established": "Established in 1996",
+    "expertise": "Leading Expertise",
+    "top": "One of Syria's top law firms",
+    "button1": "Get a Consultation",
+    "button2": "Learn More"
+  },
+  "aboutUs": {
+    "title": "About Us",
+    "subtitle": "Leading Syrian Law Firm",
+    "subtitle2": "What we",
+    "span": " Offer",
+    "description": "The firm possesses extensive experience in providing advisory and legal services across various fields of law, including commercial, civil, banking, and Islamic law."
+  },
+  "cards": {
+    "oilSector": {
+      "title": "Oil Sector",
+      "desc": "Providing legal consultation for energy projects and investments."
+    },
+    "bankingSector": {
+      "title": "Banking Sector",
+      "desc": "Regulating banking transactions and ensuring financial compliance."
+    },
+    "islamicFinance": {
+      "title": "Islamic Finance Sector",
+      "desc": "Developing financial solutions compliant with Islamic Sharia law."
+    },
+    "internationalContracts": {
+      "title": "International Contracts",
+      "desc": "Drafting and managing contracts between global companies."
+    }
+  },
+  "stats": {
+    "established": {
+      "year": "Est. 1996",
+      "subtitle": "Years of Excellence"
+    },
+    "expert": {
+      "title": "Expert Team",
+      "subtitle": "Specialized Lawyers"
+    },
+    "international": {
+      "title": "International",
+      "subtitle": "Global Reach"
+    },
+    "coverage": {
+      "title": "All Courts",
+      "subtitle": "Complete Coverage"
+    }
+  },
+  "areas": {
+    "title": "Areas of Practice",
+    "description": "Our firm handles all types of cases and possesses extensive expertise covering many areas of law, including civil law, commercial law, international law, and Islamic law."
+  },
+  "clients": {
+    "title": "Our Clients",
+    "subtitle": "Clients who trust us",
+    "description": "We are proud to serve a diverse portfolio of clients who trust us to protect their interests and achieve their goals. From individuals to leading corporations, our clients value our dedication, integrity, and results-driven approach."
+  },
+  "team": {
+    "title": "Our Team",
+    "subtitle": "Meet Our Legal Team",
+    "description": "Our team of experienced attorneys combines deep legal knowledge with a commitment to excellence, providing clients with trusted guidance and strategic solutions across all areas of law."
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Reach out today and let our experts guide you with reliable legal insight and strategic solutions.",
+    "findUs": "Where You Can Find Us",
+    "formTitle": "Contact Us To Get Legal Consultation",
+    "send": "Send",
+    "fields": {
+      "name": "Name",
+      "email": "E-Mail",
+      "phone": "Phone Number",
+      "message": "Your Message"
+    }
+  },
+  "footer": {
+    "about": {
+      "title": "About Us",
+      "text": "Abdeen Law Firm and Legal Consultancy provides trusted legal services to local and international clients."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "location": "Damascus, Syria"
+    },
+    "copyright": "Abdeen Law Firm. All rights reserved."
+  }
+}

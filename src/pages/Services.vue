@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import feather from "../assets/Abden Icon/ريشة.svg";
 import ServicesCard from "../components/ServicesCard.vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 </script>
 <template>
   <div
@@ -18,14 +20,13 @@ import ServicesCard from "../components/ServicesCard.vue";
       class="flex flex-col items-center justify-center relative z-10 px-4 max-w-4xl mx-auto"
     >
       <h1 class="text-3xl md:4xl font-semibold pt-12 text-[#ECC06F]">
-        Areas of Practice
+        {{ t("areas.title") }}
       </h1>
+
       <p
         class="text-[#F7F4ED] font-semibold pt-4 text-lg md:text-2xl text-center wrap-break-word whitespace-normal"
       >
-        Our firm handles all types of cases and possesses extensive expertise
-        covering many areas of law, including civil law, commercial law,
-        international law, and Islamic law.
+        {{ t("areas.description") }}
       </p>
     </div>
 

@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import TeamCarousel from "../components/TeamCarousel.vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 </script>
 
 <template>
@@ -13,20 +15,18 @@ import TeamCarousel from "../components/TeamCarousel.vue";
           class="text-[#ECC06F] font-semibold tracking-wide text-2xl md:text-4xl flex items-center justify-center gap-3"
         >
           <span class="block h-px w-8 bg-[#ECC06F]"></span>
-          Our Team
+          {{ t("team.title") }}
           <span class="block h-px w-8 bg-[#ECC06F]"></span>
         </h4>
 
         <h2 class="text-3xl md:text-4xl font-semibold text-[#202F66] mt-2">
-          Meet Our Legal Team
+          {{ t("team.subtitle") }}
         </h2>
 
         <p
           class="mt-6 text-xl md:text-2xl text-[#120E08] max-w-3xl mx-auto leading-relaxed"
         >
-          Our team of experienced attorneys combines deep legal knowledge with a
-          commitment to excellence, providing clients with trusted guidance and
-          strategic solutions across all areas of law.
+          {{ t("team.description") }}
         </p>
       </div>
 

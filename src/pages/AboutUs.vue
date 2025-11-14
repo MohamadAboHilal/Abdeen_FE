@@ -2,6 +2,9 @@
 import bigScale from "../assets/Abden Icon/ميزان.svg";
 import AboutUsCard from "../components/AboutUsCard.vue";
 import AboutUsBanner from "../components/AboutUsBanner.vue";
+
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
 </script>
 
 <template>
@@ -13,24 +16,23 @@ import AboutUsBanner from "../components/AboutUsBanner.vue";
       <!-- Left Text Content -->
       <div class="flex-1 max-w-2xl">
         <p class="text-[#ECC06F] text-2xl font-semibold mb-2 flex items-center">
-          About Us
+          {{ t("aboutUs.title") }}
           <span class="ml-2 text-[#ECC06F]">—</span>
         </p>
 
         <h2 class="text-4xl md:text-5xl font-semibold text-[#202F66] mb-6">
-          Leading Syrian Law Firm
+          {{ t("aboutUs.subtitle") }}
         </h2>
 
         <h3 class="text-2xl text-[#202F66] mb-4">
-          What We <span class="font-bold">Serve</span>
+          {{ t("aboutUs.subtitle2")
+          }}<span class="font-bold">{{ t("aboutUs.span") }}</span>
         </h3>
 
         <p
           class="text-lg md:text-xl leading-relaxed text-[#1F2839]/90 font-medium"
         >
-          The Firm Possesses Extensive Experience In Providing Advisory And
-          Legal Services Across Various Fields Of Law, Including Commercial,
-          Civil, Banking, And Islamic Law.
+          {{ t("aboutUs.description") }}
         </p>
 
         <AboutUsCard class="pt-12" />
@@ -44,6 +46,7 @@ import AboutUsBanner from "../components/AboutUsBanner.vue";
           :src="bigScale"
           alt="Golden Scale"
           class="hidden lg:block w-[350px] md:w-[450px] lg:w-[550px] object-contain mt-20"
+          :style="{ transform: locale === 'ar' ? 'scaleX(-1)' : 'scaleX(1)' }"
         />
       </div>
     </section>

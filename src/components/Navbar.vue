@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+const { t, locale } = useI18n();
+
+// Assets
 import logo from "../assets/Abden Icon/Abden Logo.svg";
 import email from "../assets/Abden Icon/E-Mail.svg";
 import phone from "../assets/Abden Icon/phone number.svg";
@@ -9,17 +13,26 @@ import telegram from "../assets/tLogo.png";
 import twitter from "../assets/xLogo.png";
 import TopNav from "./TopNav.vue";
 
-const activeLink = ref("Home");
+// i18n
+
+// Navbar state
+const activeLink = ref("nav.home");
 const navLinks = [
-  { name: "Home", href: "#hero" },
-  { name: "About Us", href: "#about" },
-  { name: "Services", href: "#services" },
-  { name: "Clients", href: "#clients" },
+  { name: "nav.home", href: "#hero" },
+  { name: "nav.about", href: "#about" },
+  { name: "nav.services", href: "#services" },
+  { name: "nav.clients", href: "#clients" },
 ];
 
 const mobileMenuOpen = ref(false);
 function toggleMobileMenu() {
   mobileMenuOpen.value = !mobileMenuOpen.value;
+}
+
+// Language switcher
+function switchLang(newLang: string) {
+  locale.value = newLang;
+  localStorage.setItem("locale", newLang);
 }
 </script>
 
@@ -27,13 +40,15 @@ function toggleMobileMenu() {
   <header class="sticky top-0 z-2000 bg-white shadow-sm">
     <TopNav />
 
+    <!-- Main Navbar -->
     <div
       class="flex flex-row items-center justify-between w-full px-4 py-4 max-h-16"
     >
+      <!-- Logo -->
       <img :src="logo" alt="Abdeen Logo" class="h-10 w-auto ml-8" />
 
-      <!-- Desktop Nav -->
-      <div class="hidden lg:flex flex-row items-center space-x-8 mr-8">
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex flex-row items-center space-x-8 mr-8">
         <a
           v-for="link in navLinks"
           :key="link.name"
@@ -45,16 +60,26 @@ function toggleMobileMenu() {
               ? 'underline decoration-4 underline-offset-8 text-[#ECC06F]'
               : '',
           ]"
-          >{{ link.name }}</a
         >
+          {{ t(link.name) }}
+        </a>
 
+        <!-- Contact Button -->
         <a
           href="#contact"
           class="bg-[#1D2B62] text-white px-4 py-2 rounded-md font-medium hover:bg-[#ECC06F] transition-colors inline-flex items-center"
         >
-          Contact Us
+          {{ t("nav.contact") }}
         </a>
-      </div>
+
+        <!-- Language Switch (Desktop) -->
+        <button
+          @click="switchLang(locale === 'en' ? 'ar' : 'en')"
+          class="border border-[#202B43] px-3 py-1 rounded-md text-[#202B43] font-semibold hover:bg-[#ECC06F] hover:text-white transition-colors"
+        >
+          {{ locale === "en" ? "AR" : "EN" }}
+        </button>
+      </nav>
 
       <!-- Hamburger (Mobile) -->
       <button
@@ -78,11 +103,12 @@ function toggleMobileMenu() {
       </button>
     </div>
 
-    <!-- Mobile Menu Dropdown (positioned under the header) -->
+    <!-- Mobile Menu -->
     <div
       v-if="mobileMenuOpen"
       class="lg:hidden absolute left-0 right-0 top-full bg-white shadow-lg px-8 py-4 flex flex-col space-y-4 items-center justify-center"
     >
+      <!-- Translated Mobile Links -->
       <a
         v-for="link in navLinks"
         :key="link.name"
@@ -97,52 +123,48 @@ function toggleMobileMenu() {
             ? 'underline decoration-4 underline-offset-8 text-[#ECC06F]'
             : '',
         ]"
-        >{{ link.name }}</a
       >
+        {{ t(link.name) }}
+      </a>
 
       <a
         href="#contact"
         class="bg-[#1D2B62] text-white px-4 py-2 rounded-md font-medium hover:bg-[#ECC06F] transition-colors w-full flex items-center justify-center"
         @click="mobileMenuOpen = false"
       >
-        Contact Us
+        {{ t("nav.contact") }}
       </a>
 
-      <!-- Contact & socials (mobile only) -->
+      <!-- Mobile Language Switch -->
+      <button
+        @click="switchLang(locale === 'en' ? 'ar' : 'en')"
+        class="border border-[#202B43] px-3 py-1 rounded-md text-[#202B43] font-semibold hover:bg-[#ECC06F] hover:text-white transition-colors w-full"
+      >
+        {{ locale === "en" ? "AR" : "EN" }}
+      </button>
+
+      <!-- Contact + Socials -->
       <div
-        class="md:hidden flex flex-col items-center justify-center w-full text-[#ECC06F] text-base"
+        class="flex flex-col items-center justify-center w-full text-base mt-4"
       >
         <div class="flex flex-col items-center space-y-2 mb-4 text-center">
           <div class="flex flex-row items-center space-x-2">
-            <img :src="email" alt="email" class="h-5 w-auto" />
-            <a href="mailto:Abden-Law@Gmail.Com" class="text-[#202B43] text-lg"
-              >Abden-Law@Gmail.Com</a
+            <img :src="email" class="h-5" />
+            <span class="text-[#202B43] text-lg ltr-number"
+              >Abden-Law@Gmail.Com</span
             >
           </div>
           <div class="flex flex-row items-center space-x-2">
-            <img :src="phone" alt="phone" class="h-5 w-auto" />
-            <a href="tel:+96433327456" class="text-[#202B43] text-lg"
-              >+964 33327456</a
-            >
+            <img :src="phone" class="h-5" />
+            <span class="text-[#202B43] text-lg ltr-number">+964 33327456</span>
           </div>
         </div>
+
         <div class="flex flex-row items-center justify-center space-x-6">
-          <img :src="twitter" alt="twitter" class="h-5 w-auto cursor-pointer" />
-          <img
-            :src="facebook"
-            alt="facebook"
-            class="h-5 w-auto cursor-pointer"
-          />
-          <img
-            :src="telegram"
-            alt="telegram"
-            class="h-5 w-auto cursor-pointer"
-          />
-          <img
-            :src="instagram"
-            alt="instagram"
-            class="h-5 w-auto cursor-pointer"
-          />
+          <img :src="twitter" class="h-5 cursor-pointer" />
+          <img :src="facebook" class="h-5 cursor-pointer" />
+          <img :src="telegram" class="h-5 cursor-pointer" />
+          <img :src="instagram" class="h-5 cursor-pointer" />
         </div>
       </div>
     </div>

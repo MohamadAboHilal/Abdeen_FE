@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
+
 import whiteLogo from "../assets/Abden Icon/Logo white.svg";
 import facebook from "../assets/Abden Icon/facebook_white.svg";
 import linkedin from "../assets/Abden Icon/linkedin_white.svg";
@@ -6,6 +9,9 @@ import linkedin from "../assets/Abden Icon/linkedin_white.svg";
 import call from "../assets/Abden Icon/Call.png";
 import location from "../assets/Abden Icon/Location.png";
 import email from "../assets/Abden Icon/Message.png";
+
+const { t, locale } = useI18n();
+const isArabic = computed(() => locale.value === "ar");
 </script>
 
 <template>
@@ -16,14 +22,22 @@ import email from "../assets/Abden Icon/Message.png";
     <div class="mx-auto max-w-7xl px-6 py-12 lg:py-16">
       <!-- 3-column layout with fixed center -->
       <div
-        class="grid grid-cols-1 md:[grid-template-columns:1fr_auto_1fr] items-start gap-12 text-center md:text-left"
+        class="grid grid-cols-1 md:[grid-template-columns:1fr_auto_1fr] items-start gap-12 text-center"
       >
         <!-- About Us -->
-        <section class="space-y-5 order-2 md:order-1 md:justify-self-start">
-          <h3 class="text-2xl font-semibold">About Us</h3>
+        <section
+          :class="[
+            'space-y-5 order-2 md:order-1',
+            isArabic
+              ? 'md:justify-self-end md:text-right'
+              : 'md:justify-self-start md:text-left',
+          ]"
+        >
+          <h3 class="text-2xl font-semibold">
+            {{ t("footer.about.title") }}
+          </h3>
           <p class="text-slate-300 leading-relaxed max-w-md mx-auto md:mx-0">
-            Lorem ipsum dolor sit amet consectetur. <br />Commodo pulvinar
-            molestie.
+            {{ t("footer.about.text") }}
           </p>
 
           <!-- Social icons -->
@@ -55,8 +69,17 @@ import email from "../assets/Abden Icon/Message.png";
         </div>
 
         <!-- Contact Us -->
-        <section class="space-y-5 order-3 md:order-3 md:justify-self-end">
-          <h3 class="text-2xl font-semibold">Contact Us</h3>
+        <section
+          :class="[
+            'space-y-5 order-3 md:order-3',
+            isArabic
+              ? 'md:justify-self-start md:text-right'
+              : 'md:justify-self-end md:text-left',
+          ]"
+        >
+          <h3 class="text-2xl font-semibold">
+            {{ t("footer.contact.title") }}
+          </h3>
           <ul class="space-y-4 text-slate-300">
             <li class="flex items-start justify-center md:justify-start gap-3">
               <div
@@ -72,7 +95,9 @@ import email from "../assets/Abden Icon/Message.png";
               >
                 <img :src="location" alt="Location" class="h-6 w-5" />
               </div>
-              <span class="text-lg">Damascus, Syria</span>
+              <span class="text-lg">
+                {{ t("footer.contact.location") }}
+              </span>
             </li>
             <li class="flex items-start justify-center md:justify-start gap-3">
               <div
@@ -97,7 +122,7 @@ import email from "../assets/Abden Icon/Message.png";
 
     <!-- Footer note -->
     <div class="mx-auto max-w-7xl px-6 py-4 text-center text-sm text-slate-400">
-      © {{ new Date().getFullYear() }} Abdeen Law Firm. All rights reserved.
+      © {{ new Date().getFullYear() }} {{ t("footer.copyright") }}
     </div>
   </footer>
 </template>

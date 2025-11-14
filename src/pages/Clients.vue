@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import ClientsCarousel from "../components/ClientsCarousel.vue";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 </script>
 
 <template>
@@ -9,24 +11,23 @@ import ClientsCarousel from "../components/ClientsCarousel.vue";
         class="flex flex-col items-center justify-center relative z-10 px-4 max-w-7xl mx-auto"
       >
         <h1 class="text-3xl md:text-4xl font-semibold pt-12 text-[#ECC06F]">
-          <span class="mx-8 text-[#ECC06F]">—</span>Our Clients<span
-            class="mx-8 text-[#ECC06F]"
-            >—</span
-          >
+          <span class="mx-8 text-[#ECC06F]">—</span>
+          {{ t("clients.title") }}
+          <span class="mx-8 text-[#ECC06F]">—</span>
         </h1>
+
         <h2
           class="text-[#202F66] font-semibold pt-4 text-2xl md:text-4xl text-center wrap-break-word whitespace-normal"
         >
-          Clients who trust us
+          {{ t("clients.subtitle") }}
         </h2>
+
         <p
           class="text-[#120E08] font-normal pt-4 text-xl md:text-2xl text-center wrap-break-word whitespace-normal"
         >
-          We are proud to serve a diverse portfolio of clients who trust us to
-          protect their interests and achieve their goals. From individuals to
-          leading corporations, our clients value our dedication, integrity, and
-          results-driven approach.
+          {{ t("clients.description") }}
         </p>
+
         <div class="w-full pt-10">
           <ClientsCarousel />
         </div>

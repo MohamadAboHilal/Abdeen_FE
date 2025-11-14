@@ -13,13 +13,17 @@ import linkedin from "../assets/Abden Icon/linkedin_gold.svg";
     <div class="flex flex-row items-center space-x-16">
       <div class="flex flex-row items-center space-x-2">
         <img :src="email" alt="email" class="h-5 w-auto" />
-        <a href="mailto:Abden-Law@Gmail.Com" class="text-white text-lg"
+        <a
+          href="mailto:Abden-Law@Gmail.Com"
+          class="text-white text-lg ltr-number"
           >Abden-Law@Gmail.Com</a
         >
       </div>
       <div class="flex flex-row items-center space-x-2">
         <img :src="phone" alt="phone" class="h-5 w-auto" />
-        <a href="tel:+96433327456" class="text-white text-lg">+964 33327456</a>
+        <a href="tel:+96433327456" class="text-white text-lg ltr-number"
+          >+964 33327456</a
+        >
       </div>
     </div>
     <!-- Right: Social Icons -->

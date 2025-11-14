@@ -3,6 +3,10 @@ import oil from "../assets/Abden Icon/Oil Sector.svg";
 import banking from "../assets/Abden Icon/Banking Sector.svg";
 import islamic from "../assets/Abden Icon/islamic finance.svg";
 import contracts from "../assets/Abden Icon/International Contracts.svg";
+import { computed } from "vue";
+
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 type Card = {
   id: number;
@@ -11,32 +15,32 @@ type Card = {
   icon: string;
 };
 
-const cards: Card[] = [
+const cards = computed(() => [
   {
     id: 1,
-    title: "Oil Sector",
-    desc: "Providing legal consultation for energy projects and investments.",
+    title: t("cards.oilSector.title"),
+    desc: t("cards.oilSector.desc"),
     icon: oil,
   },
   {
     id: 2,
-    title: "Banking Sector",
-    desc: "Regulating banking transactions and ensuring financial compliance.",
+    title: t("cards.bankingSector.title"),
+    desc: t("cards.bankingSector.desc"),
     icon: banking,
   },
   {
     id: 3,
-    title: "Islamic Finance Sector",
-    desc: "Developing financial solutions compliant with Islamic Sharia law.",
+    title: t("cards.islamicFinance.title"),
+    desc: t("cards.islamicFinance.desc"),
     icon: islamic,
   },
   {
     id: 4,
-    title: "International Contracts",
-    desc: "Drafting and managing contracts between global companies.",
+    title: t("cards.internationalContracts.title"),
+    desc: t("cards.internationalContracts.desc"),
     icon: contracts,
   },
-];
+]);
 </script>
 
 <template>
