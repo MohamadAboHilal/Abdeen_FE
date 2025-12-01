@@ -10,10 +10,12 @@ const { t } = useI18n();
       <div
         class="flex flex-col items-center justify-center relative z-10 px-4 max-w-7xl mx-auto"
       >
-        <h1 class="text-3xl md:text-4xl font-semibold pt-12 text-[#ECC06F]">
-          <span class="mx-8 text-[#ECC06F]">—</span>
-          {{ t("clients.title") }}
-          <span class="mx-8 text-[#ECC06F]">—</span>
+        <h1
+          class="text-2xl sm:text-3xl md:text-4xl font-semibold pt-8 md:pt-12 text-[#ECC06F] flex flex-wrap items-center justify-center"
+        >
+          <span class="mx-2 md:mx-8 text-[#ECC06F]">—</span>
+          <span class="whitespace-nowrap">{{ t("clients.title") }}</span>
+          <span class="mx-2 md:mx-8 text-[#ECC06F]">—</span>
         </h1>
 
         <h2

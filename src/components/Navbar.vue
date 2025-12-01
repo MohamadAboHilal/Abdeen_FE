@@ -13,7 +13,14 @@ import telegram from "../assets/tLogo.png";
 import twitter from "../assets/xLogo.png";
 import TopNav from "./TopNav.vue";
 
-// i18n
+import { useRouter } from "vue-router";
+const router = useRouter();
+
+function goToSection(hash: string) {
+  // Always go home first
+  router.push({ path: "/", hash });
+  activeLink.value = hash;
+}
 
 // Navbar state
 const activeLink = ref("nav.home");
@@ -52,8 +59,8 @@ function switchLang(newLang: string) {
         <a
           v-for="link in navLinks"
           :key="link.name"
-          :href="link.href"
-          @click="activeLink = link.name"
+          href="javascript:void(0)"
+          @click="goToSection(link.href)"
           :class="[
             'text-xl font-semibold text-[#202B43] hover:text-[#ECC06F] transition-colors',
             activeLink === link.name
@@ -81,26 +88,35 @@ function switchLang(newLang: string) {
         </button>
       </nav>
 
-      <!-- Hamburger (Mobile) -->
-      <button
-        class="lg:hidden flex items-center justify-center mr-8"
-        @click="toggleMobileMenu"
-        aria-label="Toggle menu"
-      >
-        <svg
-          class="w-8 h-8 text-[#202B43]"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+      <!-- Hamburger (Mobile) and Language Switch -->
+      <div class="flex items-center lg:hidden gap-2 mr-8">
+        <button
+          class="flex items-center justify-center"
+          @click="toggleMobileMenu"
+          aria-label="Toggle menu"
         >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
-      </button>
+          <svg
+            class="w-8 h-8 text-[#202B43]"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+        <!-- Mobile Language Switch -->
+        <button
+          @click="switchLang(locale === 'en' ? 'ar' : 'en')"
+          class="border border-[#202B43] px-3 py-1 rounded-md text-[#202B43] font-semibold hover:bg-[#ECC06F] hover:text-white transition-colors"
+        >
+          {{ locale === "en" ? "AR" : "EN" }}
+        </button>
+      </div>
     </div>
 
     <!-- Mobile Menu -->
@@ -112,11 +128,8 @@ function switchLang(newLang: string) {
       <a
         v-for="link in navLinks"
         :key="link.name"
-        :href="link.href"
-        @click="
-          activeLink = link.name;
-          mobileMenuOpen = false;
-        "
+        href="javascript:void(0)"
+        @click="goToSection(link.href)"
         :class="[
           'text-xl font-semibold text-[#202B43] hover:text-[#ECC06F] transition-colors',
           activeLink === link.name
@@ -128,20 +141,14 @@ function switchLang(newLang: string) {
       </a>
 
       <a
-        href="#contact"
-        class="bg-[#1D2B62] text-white px-4 py-2 rounded-md font-medium hover:bg-[#ECC06F] transition-colors w-full flex items-center justify-center"
-        @click="mobileMenuOpen = false"
+        href="javascript:void(0)"
+        @click="goToSection('#contact')"
+        class="bg-[#1D2B62] text-white px-4 py-2 rounded-md font-medium hover:bg-[#ECC06F] transition-colors inline-flex items-center"
       >
         {{ t("nav.contact") }}
       </a>
 
-      <!-- Mobile Language Switch -->
-      <button
-        @click="switchLang(locale === 'en' ? 'ar' : 'en')"
-        class="border border-[#202B43] px-3 py-1 rounded-md text-[#202B43] font-semibold hover:bg-[#ECC06F] hover:text-white transition-colors w-full"
-      >
-        {{ locale === "en" ? "AR" : "EN" }}
-      </button>
+      <!-- Mobile Language Switch moved above, removed from here -->
 
       <!-- Contact + Socials -->
       <div

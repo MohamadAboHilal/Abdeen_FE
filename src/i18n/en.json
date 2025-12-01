@@ -89,6 +89,12 @@
       "message": "Your Message"
     }
   },
+  "news": {
+    "title": "Keep up with",
+    "subtitle1": "Bringing you the latest legal developments with clarity and accuracy—",
+    "subtitle2": "because informed decisions start with informed minds."
+  },
+
   "footer": {
     "about": {
       "title": "About Us",
