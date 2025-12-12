@@ -15,7 +15,7 @@
     "track": "Proven Track Record",
     "established": "Established in 1996",
     "expertise": "Leading Expertise",
-    "top": "One of Syria's top law firms",
+    "top": "Handling cases nationwide since 1955",
     "button1": "Get a Consultation",
     "button2": "Learn More"
   },
@@ -87,7 +87,9 @@
       "email": "E-Mail",
       "phone": "Phone Number",
       "message": "Your Message"
-    }
+    },
+    "success": "Your message has been sent successfully.",
+    "error": "Something went wrong. Please try again."
   },
   "news": {
     "title": "Keep up with",
@@ -105,5 +107,10 @@
       "location": "Damascus, Syria"
     },
     "copyright": "Abdeen Law Firm. All rights reserved."
+  },
+
+  "blogDetails": {
+    "moreCommonNews": "More Common News",
+    "loading": "Loading..."
   }
 }

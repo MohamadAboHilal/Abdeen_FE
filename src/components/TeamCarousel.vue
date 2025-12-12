@@ -19,20 +19,9 @@ import firstPerson from "../assets/Abden Icon/1st.jpg";
 import secondPerson from "../assets/Abden Icon/2nd.jpg";
 import thirdPerson from "../assets/Abden Icon/3rd.jpg";
 
-interface TeamMember {
-  name: string;
-  role: string;
-  photo: string;
-}
+import { useAppData } from "../composables/useAppData";
 
-const team: TeamMember[] = [
-  { name: "Ahmad Abden", role: "Lawyer", photo: firstPerson },
-  { name: "Sarah Khalil", role: "Attorney", photo: secondPerson },
-  { name: "Omar Hassan", role: "Legal Consultant", photo: thirdPerson },
-  { name: "Lina Barakat", role: "Corporate Lawyer", photo: firstPerson },
-  { name: "Hadi Nasser", role: "Litigation Lead", photo: secondPerson },
-  { name: "Rama Ziad", role: "IP Specialist", photo: thirdPerson },
-];
+const { teamMembers } = useAppData();
 
 // responsive chunking
 const getCardsPerSlide = () => {
@@ -48,7 +37,17 @@ const chunk = <T>(arr: T[], size: number) =>
   );
 
 const cardsPerSlide = ref(getCardsPerSlide());
-const slides = computed(() => chunk(team, cardsPerSlide.value));
+const slides = computed(() =>
+  chunk(
+    [...teamMembers.value].map((member) => ({
+      ...member,
+      role: member.job_title ?? (member as any).role ?? "",
+      photo: (member as any).photo ?? member.image ?? "",
+      ["photots-plugin"]: (member as any)["photots-plugin"] ?? "",
+    })),
+    cardsPerSlide.value
+  )
+);
 
 const viewportRef = ref<HTMLElement | null>(null);
 let embla: EmblaCarouselType | null = null;

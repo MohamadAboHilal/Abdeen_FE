@@ -18,20 +18,57 @@ const email = ref("");
 const phone = ref("");
 const message = ref("");
 
-function onSubmit() {
-  console.log("Contact form submitted", {
-    name: name.value,
-    email: email.value,
-    phone: phone.value,
-    message: message.value,
-  });
+// Request state
+const isSubmitting = ref(false);
+const submitSuccess = ref(false);
+const submitError = ref<string | null>(null);
 
-  // clear form
-  name.value = "";
-  email.value = "";
-  phone.value = "";
-  message.value = "";
+async function onSubmit() {
+  if (isSubmitting.value) return;
+
+  submitSuccess.value = false;
+  submitError.value = null;
+  isSubmitting.value = true;
+
+  try {
+    const formData = new FormData();
+    formData.append("name", name.value);
+    formData.append("email", email.value);
+    formData.append("phone", phone.value);
+    formData.append("message", message.value);
+
+    const res = await fetch("https://api.abdeenlegal.com/api/contact_us", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!res.ok) {
+      throw new Error(`Request failed with status ${res.status}`);
+    }
+
+    // Optional: read response if needed
+    // const data = await res.json();
+
+    submitSuccess.value = true;
+
+    // clear form
+    name.value = "";
+    email.value = "";
+    phone.value = "";
+    message.value = "";
+  } catch (err: any) {
+    submitError.value =
+      err?.message ?? "Something went wrong. Please try again.";
+  } finally {
+    isSubmitting.value = false;
+  }
 }
+
+// script setup
+const inputDir = computed(() => (locale.value === "ar" ? "rtl" : "ltr"));
+const inputAlignClass = computed(() =>
+  locale.value === "ar" ? "text-right" : "text-left"
+);
 </script>
 
 <template>
@@ -91,13 +128,21 @@ function onSubmit() {
                 v-model="name"
                 type="text"
                 :placeholder="t('contact.fields.name')"
-                class="w-full rounded-lg bg-[#ECEEF9] p-4 shadow-sm placeholder-[#202F66] placeholder:opacity-75 placeholder:font-semibold focus:outline-none focus:ring-2 focus:ring-[#ECC06F]"
+                :dir="inputDir"
+                :class="[
+                  'w-full rounded-lg bg-[#ECEEF9] p-4 shadow-sm placeholder-[#202F66] placeholder:opacity-75 placeholder:font-semibold focus:outline-none focus:ring-2 focus:ring-[#ECC06F]',
+                  inputAlignClass,
+                ]"
               />
               <input
                 v-model="email"
                 type="email"
                 :placeholder="t('contact.fields.email')"
-                class="w-full rounded-lg bg-[#ECEEF9] p-4 shadow-sm placeholder-[#202F66] placeholder:opacity-75 placeholder:font-semibold focus:outline-none focus:ring-2 focus:ring-[#ECC06F]"
+                :dir="inputDir"
+                :class="[
+                  'w-full rounded-lg bg-[#ECEEF9] p-4 shadow-sm placeholder-[#202F66] placeholder:opacity-75 placeholder:font-semibold focus:outline-none focus:ring-2 focus:ring-[#ECC06F]',
+                  inputAlignClass,
+                ]"
               />
             </div>
 
@@ -106,7 +151,11 @@ function onSubmit() {
               v-model="phone"
               type="tel"
               :placeholder="t('contact.fields.phone')"
-              class="w-full rounded-lg bg-[#ECEEF9] p-4 shadow-sm placeholder-[#202F66] placeholder:opacity-75 placeholder:font-semibold focus:outline-none focus:ring-2 focus:ring-[#ECC06F]"
+              :dir="inputDir"
+              :class="[
+                'w-full rounded-lg bg-[#ECEEF9] p-4 shadow-sm placeholder-[#202F66] placeholder:opacity-75 placeholder:font-semibold focus:outline-none focus:ring-2 focus:ring-[#ECC06F]',
+                inputAlignClass,
+              ]"
             />
 
             <!-- Message -->
@@ -118,13 +167,35 @@ function onSubmit() {
             ></textarea>
 
             <!-- Submit -->
-            <div class="flex justify-center lg:justify-end">
-              <button
-                type="submit"
-                class="bg-[#ECC06F] text-white font-semibold px-8 py-3 rounded-lg shadow-md hover:opacity-90 transition"
+            <div class="flex flex-col gap-2 justify-center lg:justify-end">
+              <div class="flex justify-center lg:justify-end">
+                <button
+                  type="submit"
+                  :disabled="isSubmitting"
+                  class="bg-[#ECC06F] text-white font-semibold px-8 py-3 rounded-lg shadow-md hover:opacity-90 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {{
+                    isSubmitting ? t("contact.send") + "..." : t("contact.send")
+                  }}
+                </button>
+              </div>
+
+              <!-- Status messages -->
+              <p
+                v-if="submitSuccess"
+                class="text-sm text-green-600 text-center lg:text-right"
               >
-                {{ t("contact.send") }}
-              </button>
+                {{
+                  t("contact.success") ||
+                  "Your message has been sent successfully."
+                }}
+              </p>
+              <p
+                v-if="submitError"
+                class="text-sm text-red-600 text-center lg:text-right"
+              >
+                {{ submitError }}
+              </p>
             </div>
           </form>
         </div>

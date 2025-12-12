@@ -1,180 +1,324 @@
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, ref } from "vue";
-import EmblaCarousel, {
-  type EmblaOptionsType,
-  type EmblaCarouselType,
-} from "embla-carousel";
-import Autoplay from "embla-carousel-autoplay";
+import { ref, computed, onMounted, onUnmounted, nextTick, watch } from "vue";
+import { useAppData } from "../composables/useAppData";
+import { gsap } from "gsap";
 
-import fourSeasons from "../assets/Abden Icon/4seasons.svg";
-import pepsi from "../assets/Abden Icon/pepsi.svg";
-import henkel from "../assets/Abden Icon/henkel.svg";
-import techno from "../assets/Abden Icon/techno.svg";
-import versace from "../assets/Abden Icon/versace.svg";
-import beirut from "../assets/Abden Icon/beirut.svg";
-import sevenUp from "../assets/Abden Icon/7up.svg";
-import maurel from "../assets/Abden Icon/maurel.svg";
-import union from "../assets/Abden Icon/union.svg";
-import na from "../assets/Abden Icon/ina.svg";
-import diadora from "../assets/Abden Icon/diadora.svg";
-import shell from "../assets/Abden Icon/shell.svg";
+type Client = { icon: string; url?: string };
 
-const logos: string[] = [
-  fourSeasons,
-  pepsi,
-  henkel,
-  techno,
-  versace,
-  beirut,
-  sevenUp,
-  maurel,
-  union,
-  na,
-  diadora,
-  shell,
-  fourSeasons,
-  pepsi,
-  henkel,
-  techno,
-  versace,
-  beirut,
-  sevenUp,
-  maurel,
-  union,
-  na,
-  diadora,
-  shell,
-  fourSeasons,
-  pepsi,
-  henkel,
-  techno,
-];
+const { clients } = useAppData();
 
-const viewportRef = ref<HTMLElement | null>(null);
-let embla: EmblaCarouselType | null = null;
+// Refs for the marquee elements
+const topMarqueeRef = ref<HTMLElement | null>(null);
+const bottomMarqueeRef = ref<HTMLElement | null>(null);
 
-const options: EmblaOptionsType = {
-  loop: true,
-  align: "center",
-  dragFree: false,
-  slidesToScroll: 1,
-};
-
-onMounted(() => {
-  if (!viewportRef.value) return;
-  embla = EmblaCarousel(viewportRef.value, options, [
-    Autoplay({ delay: 3000, stopOnInteraction: false }),
-  ]);
+// Base list of clients, split into two rows
+const topRow = computed<Client[]>(() => {
+  const list = clients.value ?? [];
+  const half = Math.ceil(list.length / 2);
+  return list.slice(0, half);
 });
 
-onBeforeUnmount(() => embla?.destroy());
+const bottomRow = computed<Client[]>(() => {
+  const list = clients.value ?? [];
+  const half = Math.ceil(list.length / 2);
+  return list.slice(half);
+});
 
-// helper to chunk logos (12 per slide for desktop 2x6 layout)
-const chunk = (arr: string[], size: number) =>
-  Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
-    arr.slice(i * size, i * size + size)
-  );
-// Use 12 so large screens can show two rows of 6 logos (top: 0..5, bottom: 6..11)
-const slides = chunk(logos, 12);
+// Animation speed (pixels per second)
+const speed = 200;
+
+let topTimeline: gsap.core.Timeline | null = null;
+let bottomTimeline: gsap.core.Timeline | null = null;
+
+const killTimelines = () => {
+  topTimeline?.kill();
+  bottomTimeline?.kill();
+  topTimeline = null;
+  bottomTimeline = null;
+};
+
+const initAnimations = () => {
+  killTimelines();
+
+  // Animate top row
+  if (topMarqueeRef.value) {
+    const firstChild = topMarqueeRef.value.querySelector(
+      ".clients-marquee__inner"
+    ) as HTMLElement | null;
+
+    if (firstChild) {
+      const width = firstChild.offsetWidth;
+      const duration = width / speed;
+
+      if (width > 0) {
+        // Set initial position to 0
+        gsap.set(topMarqueeRef.value, { x: 0 });
+
+        // Create seamless loop
+        topTimeline = gsap.timeline({
+          repeat: -1,
+          onRepeat: () => {
+            gsap.set(topMarqueeRef.value, { x: 0 });
+          },
+        });
+
+        topTimeline.to(topMarqueeRef.value, {
+          x: -width,
+          duration,
+          ease: "none",
+          modifiers: {
+            x: (x) => {
+              const xVal = parseFloat(x);
+              return `${xVal % width}px`;
+            },
+          },
+        });
+      }
+    }
+  }
+
+  // Animate bottom row
+  if (bottomMarqueeRef.value) {
+    const firstChild = bottomMarqueeRef.value.querySelector(
+      ".clients-marquee__inner"
+    ) as HTMLElement | null;
+
+    if (firstChild) {
+      const width = firstChild.offsetWidth;
+      const duration = width / speed;
+
+      if (width > 0) {
+        // Set initial position to 0
+        gsap.set(bottomMarqueeRef.value, { x: 0 });
+
+        // Create seamless loop
+        bottomTimeline = gsap.timeline({
+          repeat: -1,
+          onRepeat: () => {
+            gsap.set(bottomMarqueeRef.value, { x: 0 });
+          },
+        });
+
+        bottomTimeline.to(bottomMarqueeRef.value, {
+          x: -width,
+          duration,
+          ease: "none",
+          modifiers: {
+            x: (x) => {
+              const xVal = parseFloat(x);
+              return `${xVal % width}px`;
+            },
+          },
+        });
+      }
+    }
+  }
+};
+
+const reinitOnResize = async () => {
+  await nextTick();
+  initAnimations();
+};
+
+onMounted(async () => {
+  await nextTick();
+  // Small timeout to ensure fonts/images are laid out
+  setTimeout(initAnimations, 100);
+  window.addEventListener("resize", reinitOnResize);
+});
+
+// Re-init when clients change (e.g. after API load)
+watch(
+  () => clients.value,
+  async () => {
+    await nextTick();
+    initAnimations();
+  }
+);
+
+onUnmounted(() => {
+  killTimelines();
+  window.removeEventListener("resize", reinitOnResize);
+});
 </script>
 
 <template>
   <section class="w-full py-12">
-    <div ref="viewportRef" class="overflow-hidden px-4 sm:px-8 lg:px-12">
-      <div class="flex pb-6 select-none">
-        <div
-          v-for="(group, slideIdx) in slides"
-          :key="slideIdx"
-          class="flex-[0_0_100%] min-w-0"
-        >
-          <!-- Brick Wall Flex Rows -->
-          <!-- Mobile: 2x2 layout -->
-          <div class="block md:hidden">
-            <div class="flex flex-row justify-center gap-4 mb-4">
+    <div
+      class="mx-auto overflow-hidden px-4 sm:px-8 lg:px-12"
+      style="max-width: 1200px"
+    >
+      <div class="space-y-4 select-none py-4">
+        <!-- TOP ROW - infinite scroll -->
+        <div class="clients-row">
+          <div ref="topMarqueeRef" class="clients-marquee pt-8">
+            <!-- First sequence -->
+            <div class="clients-marquee__inner">
               <div
-                v-for="(logo, j) in group.slice(0, 2)"
-                :key="'m-top-' + j"
-                class="flex items-center justify-center rounded-xl bg-white shadow-[0_10px_25px_rgba(0,0,0,0.07)] w-28 h-16 md:w-40 md:h-24"
+                v-for="(client, idx) in topRow"
+                :key="'top-1-' + idx"
+                class="client-card"
               >
+                <a
+                  v-if="client.url"
+                  :href="client.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    :src="client.icon"
+                    alt="Client logo"
+                    class="max-w-full max-h-full object-contain"
+                  />
+                </a>
                 <img
-                  :src="logo"
-                  alt="Client logo"
-                  class="max-w-full max-h-1/3 object-contain"
-                />
-              </div>
-            </div>
-            <div class="flex flex-row justify-center gap-4 -ml-10">
-              <div
-                v-for="(logo, j) in group.slice(2, 4)"
-                :key="'m-bottom-' + j"
-                class="flex items-center justify-center rounded-xl bg-white shadow-[0_10px_25px_rgba(0,0,0,0.07)] w-28 h-16 md:w-40 md:h-24"
-              >
-                <img
-                  :src="logo"
-                  alt="Client logo"
-                  class="max-w-auto max-h-1/2 object-contain"
-                />
-              </div>
-            </div>
-          </div>
-
-          <!-- medium screens -->
-          <div class="hidden md:block lg:hidden">
-            <!-- Top row -->
-            <div class="flex flex-row justify-center gap-6 mb-4">
-              <div
-                v-for="(logo, j) in group.slice(0, 3)"
-                :key="'top-' + j"
-                class="flex items-center justify-center rounded-xl bg-white shadow-[0_10px_25px_rgba(0,0,0,0.07)] w-28 h-16 md:w-40 md:h-24 lg:w-[235px] lg:h-[126px]"
-              >
-                <img
-                  :src="logo"
-                  alt="Client logo"
-                  class="max-w-auto max-h-1/2 object-contain"
-                />
-              </div>
-            </div>
-            <!-- Bottom row, shifted left -->
-            <div class="flex flex-row justify-center gap-6 md:-ml-32">
-              <div
-                v-for="(logo, j) in group.slice(3, 6)"
-                :key="'bottom-' + j"
-                class="flex items-center justify-center rounded-xl bg-white shadow-[0_10px_25px_rgba(0,0,0,0.07)] w-28 h-16 md:w-40 md:h-24 lg:w-[235px] lg:h-[126px]"
-              >
-                <img
-                  :src="logo"
-                  alt="Client logo"
-                  class="max-w-auto max-h-1/2 object-contain"
-                />
-              </div>
-            </div>
-          </div>
-
-          <!-- Desktop: 2 rows x 6 cards (brick wall) -->
-          <div class="hidden lg:block">
-            <!-- Top row (6 cards) -->
-            <div class="flex flex-row justify-center gap-6 mb-4">
-              <div
-                v-for="(logo, j) in group.slice(0, 6)"
-                :key="'lg-top-' + j"
-                class="flex items-center justify-center rounded-xl bg-white shadow-[0_10px_25px_rgba(0,0,0,0.07)] w-28 h-16 md:w-40 md:h-24 lg:w-[170px] lg:h-[90px]"
-              >
-                <img
-                  :src="logo"
+                  v-else
+                  :src="client.icon"
                   alt="Client logo"
                   class="max-w-full max-h-full object-contain"
                 />
               </div>
             </div>
-            <!-- Bottom row, shifted left (6 cards) -->
-            <div class="flex flex-row justify-center gap-6 md:-ml-32 lg:-ml-40">
+
+            <!-- Second sequence (duplicate for seamless loop) -->
+            <div class="clients-marquee__inner">
               <div
-                v-for="(logo, j) in group.slice(6, 12)"
-                :key="'lg-bottom-' + j"
-                class="flex items-center justify-center rounded-xl bg-white shadow-[0_10px_25px_rgba(0,0,0,0.07)] w-28 h-16 md:w-40 md:h-24 lg:w-[170px] lg:h-[90px]"
+                v-for="(client, idx) in topRow"
+                :key="'top-2-' + idx"
+                class="client-card"
               >
+                <a
+                  v-if="client.url"
+                  :href="client.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    :src="client.icon"
+                    alt="Client logo"
+                    class="max-w-full max-h-full object-contain"
+                  />
+                </a>
                 <img
-                  :src="logo"
+                  v-else
+                  :src="client.icon"
+                  alt="Client logo"
+                  class="max-w-full max-h-full object-contain"
+                />
+              </div>
+            </div>
+
+            <!-- Third sequence (extra for buffer) -->
+            <div class="clients-marquee__inner">
+              <div
+                v-for="(client, idx) in topRow"
+                :key="'top-3-' + idx"
+                class="client-card"
+              >
+                <a
+                  v-if="client.url"
+                  :href="client.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    :src="client.icon"
+                    alt="Client logo"
+                    class="max-w-full max-h-full object-contain"
+                  />
+                </a>
+                <img
+                  v-else
+                  :src="client.icon"
+                  alt="Client logo"
+                  class="max-w-full max-h-full object-contain"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOTTOM ROW - infinite scroll, shifted like brick wall -->
+        <div class="clients-row clients-row--shifted py-4">
+          <div ref="bottomMarqueeRef" class="clients-marquee pb-8">
+            <!-- First sequence -->
+            <div class="clients-marquee__inner">
+              <div
+                v-for="(client, idx) in bottomRow"
+                :key="'bottom-1-' + idx"
+                class="client-card client-card--small"
+              >
+                <a
+                  v-if="client.url"
+                  :href="client.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    :src="client.icon"
+                    alt="Client logo"
+                    class="max-w-full max-h-full object-contain"
+                  />
+                </a>
+                <img
+                  v-else
+                  :src="client.icon"
+                  alt="Client logo"
+                  class="max-w-full max-h-full object-contain"
+                />
+              </div>
+            </div>
+
+            <!-- Second sequence -->
+            <div class="clients-marquee__inner">
+              <div
+                v-for="(client, idx) in bottomRow"
+                :key="'bottom-2-' + idx"
+                class="client-card client-card--small"
+              >
+                <a
+                  v-if="client.url"
+                  :href="client.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    :src="client.icon"
+                    alt="Client logo"
+                    class="max-w-full max-h-full object-contain"
+                  />
+                </a>
+                <img
+                  v-else
+                  :src="client.icon"
+                  alt="Client logo"
+                  class="max-w-full max-h-full object-contain"
+                />
+              </div>
+            </div>
+
+            <!-- Third sequence -->
+            <div class="clients-marquee__inner">
+              <div
+                v-for="(client, idx) in bottomRow"
+                :key="'bottom-3-' + idx"
+                class="client-card client-card--small"
+              >
+                <a
+                  v-if="client.url"
+                  :href="client.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    :src="client.icon"
+                    alt="Client logo"
+                    class="max-w-full max-h-full object-contain"
+                  />
+                </a>
+                <img
+                  v-else
+                  :src="client.icon"
                   alt="Client logo"
                   class="max-w-full max-h-full object-contain"
                 />
@@ -186,3 +330,134 @@ const slides = chunk(logos, 12);
     </div>
   </section>
 </template>
+
+<style scoped>
+/* Row wrapper */
+.clients-row {
+  width: 100%;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+}
+
+/* Bottom row: brick-wall look → slightly shifted to the right */
+.clients-row--shifted {
+  margin-left: 0;
+}
+
+@media (min-width: 768px) {
+  .clients-row--shifted {
+    margin-left: 4rem;
+  }
+}
+
+/* Outer track that scrolls horizontally */
+.clients-marquee {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+/* Inner sequence */
+.clients-marquee__inner {
+  display: flex;
+}
+
+/* -------------------------
+   CLIENT CARD – TOP ROW
+   ------------------------- */
+.client-card {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border-radius: 0.75rem;
+  margin-right: 1.5rem;
+
+  /* ★ Bigger base size to prevent clipping */
+  width: 11rem;
+  height: 6rem;
+}
+
+@media (min-width: 640px) {
+  .client-card {
+    width: 12rem;
+    height: 6.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .client-card {
+    width: 13rem;
+    height: 7rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .client-card {
+    width: 14rem;
+    height: 7.5rem;
+  }
+}
+
+/* -------------------------
+   CLIENT CARD – BOTTOM ROW (smaller)
+   ------------------------- */
+.client-card--small {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border-radius: 0.75rem;
+  margin-right: 1.5rem;
+
+  width: 10rem;
+  height: 5rem;
+}
+
+@media (min-width: 640px) {
+  .client-card--small {
+    width: 11rem;
+    height: 5.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .client-card--small {
+    width: 12rem;
+    height: 6rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .client-card--small {
+    width: 12.5rem;
+    height: 6.5rem;
+  }
+}
+
+/* -------------------------
+   LOGO INSIDE CARDS
+   ------------------------- */
+
+.client-card img,
+.client-card--small img {
+  object-fit: contain;
+
+  /* ★ Prevent image overflow */
+  max-width: 70%;
+  max-height: 70%;
+
+  /* Smooth scaling */
+  transition: transform 0.2s ease;
+}
+
+/* Optional hover effect */
+.client-card:hover img,
+.client-card--small:hover img {
+  transform: scale(1.05);
+}
+</style>

@@ -82,7 +82,7 @@ const { t } = useI18n();
       <div
         class="flex flex-col md:flex-row pt-36 space-x-0 md:space-x-4 mb-20 space-y-4 md:space-y-0"
       >
-        <a
+        <!-- <a
           href="#contact"
           role="button"
           aria-label="Go to contact section"
@@ -98,7 +98,7 @@ const { t } = useI18n();
           class="bg-transparent border-4 text-white font-semibold text-[20px] py-4 px-3 rounded-[10px] w-full md:w-auto inline-flex items-center justify-center"
         >
           {{ t("hero.button2") }}
-        </a>
+        </a> -->
       </div>
     </div>
   </section>

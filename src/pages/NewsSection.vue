@@ -11,81 +11,22 @@ import EmblaCarousel, {
   type EmblaCarouselType,
   type EmblaOptionsType,
 } from "embla-carousel";
+
 import Autoplay from "embla-carousel-autoplay";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-
 import NewsCard from "../components/NewsCard.vue";
-import heroImg from "../assets/Abden Icon/whiteHouse.jpg";
 
 const { t } = useI18n();
 const router = useRouter();
 
-interface NewsItem {
-  id: number;
-  title: string;
-  category: string;
-  date: string;
-  image: string;
-  badgeClass?: string;
-}
+import { useAppData } from "../composables/useAppData";
 
-const articles: NewsItem[] = [
-  {
-    id: 1,
-    title:
-      "Preparing Investment And Industrial Licenses, Drafting Agreements, And Resolving Commercial Disputes.",
-    category: "NEWS",
-    date: "August 20, 2022",
-    image: heroImg,
-    badgeClass: "bg-red-100 text-red-700",
-  },
-  {
-    id: 2,
-    title:
-      "Preparing Investment And Industrial Licenses, Drafting Agreements, And Resolving Commercial Disputes.",
-    category: "Real Estate Law",
-    date: "August 20, 2022",
-    image: heroImg,
-    badgeClass: "bg-blue-100 text-blue-700",
-  },
-  {
-    id: 3,
-    title:
-      "Preparing Investment And Industrial Licenses, Drafting Agreements, And Resolving Commercial Disputes.",
-    category: "Corporate",
-    date: "August 20, 2022",
-    image: heroImg,
-    badgeClass: "bg-emerald-100 text-emerald-700",
-  },
-  {
-    id: 4,
-    title:
-      "Preparing Investment And Industrial Licenses, Drafting Agreements, And Resolving Commercial Disputes.",
-    category: "NEWS",
-    date: "August 20, 2022",
-    image: heroImg,
-    badgeClass: "bg-red-100 text-red-700",
-  },
-  {
-    id: 5,
-    title:
-      "Preparing Investment And Industrial Licenses, Drafting Agreements, And Resolving Commercial Disputes.",
-    category: "Corporate",
-    date: "August 20, 2022",
-    image: heroImg,
-    badgeClass: "bg-emerald-100 text-emerald-700",
-  },
-  {
-    id: 6,
-    title:
-      "Preparing Investment And Industrial Licenses, Drafting Agreements, And Resolving Commercial Disputes.",
-    category: "Real Estate Law",
-    date: "August 20, 2022",
-    image: heroImg,
-    badgeClass: "bg-blue-100 text-blue-700",
-  },
-];
+const { blogs, fetchAppData } = useAppData();
+
+onMounted(() => {
+  fetchAppData();
+});
 
 // ---------- responsive chunking ----------
 
@@ -102,7 +43,19 @@ const chunk = <T>(arr: T[], size: number) =>
     arr.slice(i * size, i * size + size)
   );
 
-const slides = computed(() => chunk(articles, chunkSize.value));
+const slides = computed(() => {
+  // Transform blogs to NewsItem structure
+  const normalizedBlogs = blogs.value.map((blog, idx) => ({
+    id: idx + 1,
+    title: blog.title,
+    category: blog.category,
+    date: blog.created_at,
+    image: blog.image,
+    badgeClass: blog.badge_class,
+    body: (blog as any).body, // if available
+  }));
+  return chunk(normalizedBlogs, chunkSize.value);
+});
 const isMobileSlide = computed(() => chunkSize.value === 2);
 
 // ---------- Embla setup ----------

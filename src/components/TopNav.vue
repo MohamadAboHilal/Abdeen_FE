@@ -3,6 +3,11 @@ import email from "../assets/sms.png";
 import phone from "../assets/call-calling.png";
 import facebook from "../assets/Abden Icon/facebook_Gold.svg";
 import linkedin from "../assets/Abden Icon/linkedin_gold.svg";
+
+import { useSettings } from "../composables/useSettings";
+
+const { settings } = useSettings();
+
 // Removed local Facebook and LinkedIn icon imports
 </script>
 <template>
@@ -14,25 +19,39 @@ import linkedin from "../assets/Abden Icon/linkedin_gold.svg";
       <div class="flex flex-row items-center space-x-2">
         <img :src="email" alt="email" class="h-5 w-auto" />
         <a
-          href="mailto:Abden-Law@Gmail.Com"
+          :href="`mailto:${settings?.mail}`"
           class="text-white text-lg ltr-number"
-          >Abden-Law@Gmail.Com</a
+          >{{ settings?.mail }}</a
         >
       </div>
       <div class="flex flex-row items-center space-x-2">
         <img :src="phone" alt="phone" class="h-5 w-auto" />
-        <a href="tel:+96433327456" class="text-white text-lg ltr-number"
-          >+964 33327456</a
+        <a
+          :href="`tel:${settings?.phoneNumber}`"
+          class="text-white text-lg ltr-number"
+          >{{ settings?.phoneNumber }}</a
         >
       </div>
     </div>
     <!-- Right: Social Icons -->
     <div class="flex flex-row items-center space-x-10">
-      <img :src="facebook" alt="facebook" class="h-5 w-auto cursor-pointer" />
-      <img :src="linkedin" alt="linkedin" class="h-5 w-auto cursor-pointer" />
+      <a
+        v-if="settings?.facebookUrl"
+        :href="settings.facebookUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img :src="facebook" alt="facebook" class="h-5 w-auto cursor-pointer" />
+      </a>
 
-      <!-- <img :src="telegram" alt="telegram" class="h-5 w-auto cursor-pointer" />
-      <img :src="instagram" alt="instagram" class="h-5 w-auto cursor-pointer" /> -->
+      <a
+        v-if="settings?.linkedinUrl"
+        :href="settings.linkedinUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img :src="linkedin" alt="linkedin" class="h-5 w-auto cursor-pointer" />
+      </a>
     </div>
   </div>
 </template>

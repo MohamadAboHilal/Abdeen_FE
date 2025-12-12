@@ -1,20 +1,24 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
-const { t, locale } = useI18n();
+
+import { useSettings } from "../composables/useSettings";
 
 // Assets
 import logo from "../assets/Abden Icon/Abden Logo.svg";
 import email from "../assets/Abden Icon/E-Mail.svg";
 import phone from "../assets/Abden Icon/phone number.svg";
-import facebook from "../assets/fLogo.png";
-import instagram from "../assets/iLogo.png";
-import telegram from "../assets/tLogo.png";
-import twitter from "../assets/xLogo.png";
+import facebook from "../assets/Abden Icon/facebook_Gold.svg";
+import linkedin from "../assets/Abden Icon/linkedin_gold.svg";
+
 import TopNav from "./TopNav.vue";
 
 import { useRouter } from "vue-router";
 const router = useRouter();
+
+const { t, locale } = useI18n();
+
+const { settings } = useSettings();
 
 function goToSection(hash: string) {
   // Always go home first
@@ -157,21 +161,44 @@ function switchLang(newLang: string) {
         <div class="flex flex-col items-center space-y-2 mb-4 text-center">
           <div class="flex flex-row items-center space-x-2">
             <img :src="email" class="h-5" />
-            <span class="text-[#202B43] text-lg ltr-number"
-              >Abden-Law@Gmail.Com</span
-            >
+            <span class="text-[#202B43] text-lg ltr-number">{{
+              settings?.mail
+            }}</span>
           </div>
           <div class="flex flex-row items-center space-x-2">
             <img :src="phone" class="h-5" />
-            <span class="text-[#202B43] text-lg ltr-number">+964 33327456</span>
+            <span class="text-[#202B43] text-lg ltr-number">{{
+              settings?.phoneNumber
+            }}</span>
           </div>
         </div>
 
-        <div class="flex flex-row items-center justify-center space-x-6">
-          <img :src="twitter" class="h-5 cursor-pointer" />
-          <img :src="facebook" class="h-5 cursor-pointer" />
-          <img :src="telegram" class="h-5 cursor-pointer" />
-          <img :src="instagram" class="h-5 cursor-pointer" />
+        <div class="flex flex-row items-center space-x-10">
+          <a
+            v-if="settings?.facebookUrl"
+            :href="settings.facebookUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              :src="facebook"
+              alt="facebook"
+              class="h-5 w-auto cursor-pointer"
+            />
+          </a>
+
+          <a
+            v-if="settings?.linkedinUrl"
+            :href="settings.linkedinUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              :src="linkedin"
+              alt="linkedin"
+              class="h-5 w-auto cursor-pointer"
+            />
+          </a>
         </div>
       </div>
     </div>
