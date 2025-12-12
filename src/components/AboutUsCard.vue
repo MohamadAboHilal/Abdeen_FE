@@ -8,13 +8,6 @@ import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
-type Card = {
-  id: number;
-  title: string;
-  desc: string;
-  icon: string;
-};
-
 const cards = computed(() => [
   {
     id: 1,

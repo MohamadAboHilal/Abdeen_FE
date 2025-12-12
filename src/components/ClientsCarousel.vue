@@ -3,6 +3,18 @@ import { ref, computed, onMounted, onUnmounted, nextTick, watch } from "vue";
 import { useAppData } from "../composables/useAppData";
 import { gsap } from "gsap";
 
+import { useI18n } from "vue-i18n";
+const { locale } = useI18n();
+
+watch(
+  () => locale.value,
+  async () => {
+    await nextTick();
+
+    setTimeout(initAnimations, 50);
+  }
+);
+
 type Client = { icon: string; url?: string };
 
 const { clients } = useAppData();
@@ -140,6 +152,8 @@ onUnmounted(() => {
   killTimelines();
   window.removeEventListener("resize", reinitOnResize);
 });
+
+console.log(clients.value);
 </script>
 
 <template>
@@ -459,5 +473,11 @@ onUnmounted(() => {
 .client-card:hover img,
 .client-card--small:hover img {
   transform: scale(1.05);
+}
+
+.clients-row,
+.clients-marquee,
+.clients-marquee__inner {
+  direction: ltr;
 }
 </style>

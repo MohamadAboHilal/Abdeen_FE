@@ -35,8 +35,8 @@ const currentId = computed<number | null>(() => {
   if (idParam !== undefined && !isNaN(Number(idParam))) {
     return Number(idParam);
   }
-  const articles: any[] = allArticles.value || [];
-  return articles.length ? articles[0].id ?? null : null;
+  const articles = allArticles.value ? [...allArticles.value] : [];
+  return articles.length && articles[0] ? articles[0].id ?? null : null;
 });
 
 const loading = ref(true);
@@ -58,7 +58,7 @@ const article = computed(() => {
 });
 
 const moreNews = computed(() => {
-  const articles: any[] = allArticles.value || [];
+  const articles = allArticles.value ? [...allArticles.value] : [];
   if (!articles.length || !currentId.value) return [];
   return articles
     .filter((a: any) => a.id !== currentId.value)
@@ -218,7 +218,7 @@ const extraCount = computed(() => Math.max(galleryImages.value.length - 1, 0));
                   class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-black/10 px-4 py-1 rounded-full backdrop-blur"
                 >
                   <button
-                    v-for="(img, index) in galleryImages"
+                    v-for="(_, index) in galleryImages"
                     :key="index"
                     type="button"
                     @click="goToSlide(index)"

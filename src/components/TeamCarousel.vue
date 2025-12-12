@@ -15,10 +15,6 @@ import Autoplay from "embla-carousel-autoplay";
 
 import TeamCard from "./TeamCard.vue";
 
-import firstPerson from "../assets/Abden Icon/1st.jpg";
-import secondPerson from "../assets/Abden Icon/2nd.jpg";
-import thirdPerson from "../assets/Abden Icon/3rd.jpg";
-
 import { useAppData } from "../composables/useAppData";
 
 const { teamMembers } = useAppData();

@@ -1,14 +1,7 @@
 <script setup lang="ts">
-import legal from "../assets/Abden Icon/Legal Consultations.svg";
-import company from "../assets/Abden Icon/Company Formation.svg";
-import trademark from "../assets/Abden Icon/small_scale.svg";
-import commercial from "../assets/Abden Icon/Commercial Disputes.svg";
-import realEstate from "../assets/Abden Icon/Real Estate Law.svg";
-import intellectual from "../assets/Abden Icon/Intellectual Property.svg";
-
 import { useAppData } from "../composables/useAppData";
 
-const { services, loading, error } = useAppData();
+const { services } = useAppData();
 </script>
 
 <template>
