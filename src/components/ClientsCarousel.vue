@@ -426,8 +426,6 @@ console.log(clients.value);
   justify-content: center;
   background-color: white;
   border-radius: 0.75rem;
-  margin-right: 1.5rem;
-
   width: 10rem;
   height: 5rem;
 }

@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Pacifico&family=Playwrite+AU+SA:wght@100..400&family=Playwrite+CA+Guides&family=Playwrite+DE+VA+Guides&display=swap");
 @import "tailwindcss";
 
 @source inline("{bg,text}-{red,orange,emerald,teal,sky,cyan,blue,indigo,violet,purple,pink,rose}-{100,700}");
@@ -44,4 +45,12 @@ body {
 [dir="rtl"] .ltr-number {
   direction: ltr;
   unicode-bidi: bidi-override;
+}
+
+[dir="rtl"] :root {
+  font-family: "Amiri", serif !important;
+}
+
+[dir="rtl"] body {
+  font-family: "Amiri", serif !important;
 }

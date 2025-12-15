@@ -123,7 +123,7 @@ function goToArticle(id: number) {
 </script>
 
 <template>
-  <section class="bg-[#F7F8FC] py-16 md:py-24">
+  <section class="bg-[#F7F8FC] py-16 md:py-24" id="blogs">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Heading -->
       <header class="text-center mb-8 md:mb-14 px-2">

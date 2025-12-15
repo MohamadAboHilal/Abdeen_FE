@@ -5,7 +5,7 @@ import { useI18n } from "vue-i18n";
 import { useSettings } from "../composables/useSettings";
 
 // Assets
-import logo from "../assets/Abden Icon/Abden Logo.svg";
+import logo from "../assets/Abden Icon/image-removebg-preview (1).png";
 import email from "../assets/Abden Icon/E-Mail.svg";
 import phone from "../assets/Abden Icon/phone number.svg";
 import facebook from "../assets/Abden Icon/facebook_Gold.svg";
@@ -33,6 +33,7 @@ const navLinks = [
   { name: "nav.about", href: "#about" },
   { name: "nav.services", href: "#services" },
   { name: "nav.clients", href: "#clients" },
+  { name: "nav.blogs", href: "#blogs" },
 ];
 
 const mobileMenuOpen = ref(false);
@@ -77,7 +78,8 @@ function switchLang(newLang: string) {
 
         <!-- Contact Button -->
         <a
-          href="#contact"
+          href="javascript:void(0)"
+          @click="goToSection('#contact')"
           class="bg-[#1D2B62] text-white px-4 py-2 rounded-md font-medium hover:bg-[#ECC06F] transition-colors inline-flex items-center"
         >
           {{ t("nav.contact") }}
