@@ -8,8 +8,8 @@ import { useSettings } from "../composables/useSettings";
 import logo from "../assets/Abden Icon/image-removebg-preview (1).png";
 import email from "../assets/Abden Icon/E-Mail.svg";
 import phone from "../assets/Abden Icon/phone number.svg";
-import facebook from "../assets/Abden Icon/facebook_Gold.svg";
-import linkedin from "../assets/Abden Icon/linkedin_gold.svg";
+import facebook from "../assets/Abden Icon/blue-facebook.png";
+import linkedin from "../assets/Abden Icon/blue-linkedin.png";
 
 import TopNav from "./TopNav.vue";
 
@@ -185,7 +185,7 @@ function switchLang(newLang: string) {
             <img
               :src="facebook"
               alt="facebook"
-              class="h-5 w-auto cursor-pointer"
+              class="h-7 w-auto cursor-pointer"
             />
           </a>
 
@@ -198,7 +198,7 @@ function switchLang(newLang: string) {
             <img
               :src="linkedin"
               alt="linkedin"
-              class="h-5 w-auto cursor-pointer"
+              class="h-7 w-auto cursor-pointer"
             />
           </a>
         </div>

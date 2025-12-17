@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import email from "../assets/sms.png";
 import phone from "../assets/call-calling.png";
-import facebook from "../assets/Abden Icon/facebook_Gold.svg";
-import linkedin from "../assets/Abden Icon/linkedin_gold.svg";
+import facebook from "../assets/Abden Icon/facebook_white.svg";
+import linkedin from "../assets/Abden Icon/linkedin_white.svg";
 
 import { useSettings } from "../composables/useSettings";
 
