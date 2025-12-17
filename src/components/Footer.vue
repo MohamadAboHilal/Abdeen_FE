@@ -124,7 +124,7 @@ onMounted(() => {
               <div
                 class="mt-1 h-7 w-7 rounded-md bg-white/10 flex items-center justify-center"
               >
-                <img :src="location" alt="Location" class="h-6 w-5" />
+                <img :src="location" alt="Location" class="h-5 w-5" />
               </div>
 
               <!-- If you want this to show actual formatted coordinates -->
