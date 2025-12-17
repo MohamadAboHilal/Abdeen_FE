@@ -1,19 +1,20 @@
 <!-- src/pages/NewsDetailPage.vue -->
 <script setup lang="ts">
-import { computed, ref, watch, onMounted, unref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import {computed, ref, watch, onMounted, unref} from "vue";
+import {useRoute, useRouter} from "vue-router";
 
-import { useAppData } from "../composables/useAppData";
+import {useAppData} from "../composables/useAppData";
 
 import Navbar from "../components/Navbar.vue";
 import Footer from "../components/Footer.vue";
 import NewsCard from "../components/NewsCard.vue";
 
-import { useI18n } from "vue-i18n";
-const { t, locale } = useI18n();
+import {useI18n} from "vue-i18n";
+
+const {t, locale} = useI18n();
 
 interface ApiBlog {
-  id: number;
+  id: string;
   title: string;
   description: string;
   category: string;
@@ -23,7 +24,7 @@ interface ApiBlog {
 }
 
 // UseAppData for more news
-const { blogs, fetchAppData } = useAppData();
+const {blogs, fetchAppData} = useAppData();
 const allArticles = computed(() => unref(blogs));
 
 const route = useRoute();
@@ -32,8 +33,8 @@ const router = useRouter();
 const currentId = computed<number | null>(() => {
   const idParam = route.params.id;
   // Try to parse id, fallback to first blog's id if missing
-  if (idParam !== undefined && !isNaN(Number(idParam))) {
-    return Number(idParam);
+  if (idParam !== undefined) {
+    return String(idParam);
   }
   const articles = allArticles.value ? [...allArticles.value] : [];
   return articles.length && articles[0] ? articles[0].id ?? null : null;
@@ -61,33 +62,33 @@ const moreNews = computed(() => {
   const articles = allArticles.value ? [...allArticles.value] : [];
   if (!articles.length || !currentId.value) return [];
   return articles
-    .filter((a: any) => a.id !== currentId.value)
-    .slice(0, 3)
-    .map((a: any) => ({
-      id: a.id,
-      title: a.title,
-      category: a.category,
-      date: a.created_at,
-      image: a.image,
-      images: a.images ? a.images.map((img: any) => img.url) : [],
-      badgeClass: a.badge_class,
-      body: [a.description],
-    }));
+      .filter((a: any) => a.id !== currentId.value)
+      .slice(0, 3)
+      .map((a: any) => ({
+        id: a.id,
+        title: a.title,
+        category: a.category,
+        date: a.created_at,
+        image: a.image,
+        images: a.images ? a.images.map((img: any) => img.url) : [],
+        badgeClass: a.badge_class,
+        body: [a.description],
+      }));
 });
 
-function goToArticle(id: number) {
+function goToArticle(id: string) {
   if (!id) return;
-  router.push({ path: `/news/${id}` });
+  router.push({path: `/news/${id}`});
 }
 
-async function fetchBlog(id: number, lang?: string) {
+async function fetchBlog(id: string, lang?: string) {
   loading.value = true;
   try {
     const languageHeader =
-      lang ||
-      (locale.value as string) ||
-      localStorage.getItem("locale") ||
-      "en";
+        lang ||
+        (locale.value as string) ||
+        localStorage.getItem("locale") ||
+        "en";
 
     const res = await fetch(`https://api.abdeenlegal.com/api/blog/${id}`, {
       headers: {
@@ -109,7 +110,7 @@ async function fetchBlog(id: number, lang?: string) {
 // Ensure global app data (including blogs) is loaded even on reload
 onMounted(async () => {
   const lang =
-    (locale.value as string) || localStorage.getItem("locale") || "en";
+      (locale.value as string) || localStorage.getItem("locale") || "en";
   await fetchAppData(lang);
   if (currentId.value != null) {
     await fetchBlog(currentId.value, lang);
@@ -118,24 +119,24 @@ onMounted(async () => {
 
 // Refetch article when route id changes
 watch(
-  () => currentId.value,
-  (id) => {
-    if (id != null) {
-      fetchBlog(id);
+    () => currentId.value,
+    (id) => {
+      if (id != null) {
+        fetchBlog(id);
+      }
     }
-  }
 );
 
 // Refetch when language changes (for both main article + more news)
 watch(
-  () => locale.value,
-  async (newLang) => {
-    const lang = (newLang as string) || "en";
-    await fetchAppData(lang);
-    if (currentId.value != null) {
-      await fetchBlog(currentId.value, lang);
+    () => locale.value,
+    async (newLang) => {
+      const lang = (newLang as string) || "en";
+      await fetchAppData(lang);
+      if (currentId.value != null) {
+        await fetchBlog(currentId.value, lang);
+      }
     }
-  }
 );
 
 /* ---------------- Per-article gallery logic ---------------- */
@@ -154,16 +155,16 @@ const activeSlide = ref(0);
 const mainImage = computed<string | null>(() => {
   if (!galleryImages.value.length) return null;
   return (
-    galleryImages.value[activeSlide.value] ?? galleryImages.value[0] ?? null
+      galleryImages.value[activeSlide.value] ?? galleryImages.value[0] ?? null
   );
 });
 
 // Reset active slide when article changes
 watch(
-  () => article.value?.id,
-  () => {
-    activeSlide.value = 0;
-  }
+    () => article.value?.id,
+    () => {
+      activeSlide.value = 0;
+    }
 );
 
 function goToSlide(index: number) {
@@ -177,11 +178,11 @@ const extraCount = computed(() => Math.max(galleryImages.value.length - 1, 0));
 
 <template>
   <section class="bg-[#F7F8FC] min-h-screen">
-    <Navbar />
+    <Navbar/>
 
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
       <div
-        class="bg-white rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.06)] p-4 sm:p-6 md:p-8"
+          class="bg-white rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.06)] p-4 sm:p-6 md:p-8"
       >
         <div v-if="loading" class="text-center py-10 text-slate-500 h-screen">
           {{ t("blogDetails.loading") }}
@@ -190,8 +191,8 @@ const extraCount = computed(() => Math.max(galleryImages.value.length - 1, 0));
           <!-- Top row: category + share icon -->
           <div class="flex items-center justify-between mb-4">
             <span
-              class="text-xs sm:text-sm font-semibold uppercase tracking-wide px-3 py-1 rounded-md"
-              :class="article?.badgeClass || 'bg-sky-100 text-sky-700'"
+                class="text-xs sm:text-sm font-semibold uppercase tracking-wide px-3 py-1 rounded-md"
+                :class="article?.badgeClass || 'bg-sky-100 text-sky-700'"
             >
               {{ article?.category ?? "NEWS" }}
             </span>
@@ -199,31 +200,31 @@ const extraCount = computed(() => Math.max(galleryImages.value.length - 1, 0));
 
           <!-- Image block: only if we have at least one image -->
           <div
-            v-if="galleryImages.length"
-            class="flex items-start justify-between gap-6 mb-6"
+              v-if="galleryImages.length"
+              class="flex items-start justify-between gap-6 mb-6"
           >
             <!-- Left: Big image with dots -->
             <div class="flex-1">
               <div class="relative rounded-3xl overflow-hidden bg-black/5">
                 <img
-                  v-if="mainImage"
-                  :src="mainImage"
-                  alt="Article main image"
-                  class="w-full h-[260px] sm:h-[320px] md:h-[380px] lg:h-[420px] object-cover"
+                    v-if="mainImage"
+                    :src="mainImage"
+                    alt="Article main image"
+                    class="w-full h-[260px] sm:h-[320px] md:h-[380px] lg:h-[420px] object-cover"
                 />
 
                 <!-- Dots (only if more than 1 image) -->
                 <div
-                  v-if="galleryImages.length > 1"
-                  class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-black/10 px-4 py-1 rounded-full backdrop-blur"
+                    v-if="galleryImages.length > 1"
+                    class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-black/10 px-4 py-1 rounded-full backdrop-blur"
                 >
                   <button
-                    v-for="(_, index) in galleryImages"
-                    :key="index"
-                    type="button"
-                    @click="goToSlide(index)"
-                    class="h-2.5 w-2.5 rounded-full transition"
-                    :class="
+                      v-for="(_, index) in galleryImages"
+                      :key="index"
+                      type="button"
+                      @click="goToSlide(index)"
+                      class="h-2.5 w-2.5 rounded-full transition"
+                      :class="
                       index === activeSlide
                         ? 'bg-white'
                         : 'bg-white/50 hover:bg-white/80'
@@ -235,24 +236,24 @@ const extraCount = computed(() => Math.max(galleryImages.value.length - 1, 0));
 
             <!-- Right: Small preview with +N overlay (only if more than 1 image, hidden on small screens) -->
             <div
-              v-if="galleryImages.length > 1"
-              class="hidden md:block w-[32%]"
+                v-if="galleryImages.length > 1"
+                class="hidden md:block w-[32%]"
             >
               <div
-                class="relative rounded-3xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.12)]"
+                  class="relative rounded-3xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.12)]"
               >
                 <img
-                  :src="galleryImages[1] || galleryImages[0]"
-                  :alt="article?.title"
-                  class="w-full h-[180px] lg:h-[220px] object-cover"
+                    :src="galleryImages[1] || galleryImages[0]"
+                    :alt="article?.title"
+                    class="w-full h-[180px] lg:h-[220px] object-cover"
                 />
 
                 <!-- +N overlay (N = extraCount) -->
                 <div
-                  class="absolute inset-0 flex items-center justify-center bg-black/25"
+                    class="absolute inset-0 flex items-center justify-center bg-black/25"
                 >
                   <div
-                    class="px-6 py-3 rounded-2xl bg-black/60 text-white text-xl font-semibold"
+                      class="px-6 py-3 rounded-2xl bg-black/60 text-white text-xl font-semibold"
                   >
                     +{{ extraCount }}
                   </div>
@@ -263,7 +264,7 @@ const extraCount = computed(() => Math.max(galleryImages.value.length - 1, 0));
 
           <!-- Title -->
           <h1
-            class="mt-2 text-xl sm:text-2xl md:text-3xl font-semibold text-[#202F66] leading-snug"
+              class="mt-2 text-xl sm:text-2xl md:text-3xl font-semibold text-[#202F66] leading-snug"
           >
             {{ article?.title }}
           </h1>
@@ -276,9 +277,9 @@ const extraCount = computed(() => Math.max(galleryImages.value.length - 1, 0));
           <!-- Body -->
           <div class="mt-4 space-y-3 text-sm md:text-base text-slate-800">
             <p
-              v-for="(para, idx) in article?.body"
-              :key="idx"
-              v-html="para"
+                v-for="(para, idx) in article?.body"
+                :key="idx"
+                v-html="para"
             ></p>
           </div>
 
@@ -288,17 +289,18 @@ const extraCount = computed(() => Math.max(galleryImages.value.length - 1, 0));
               {{ t("blogDetails.moreCommonNews") }}
             </h2>
             <div
-              v-if="moreNews.length"
-              class="grid gap-4 md:gap-6 md:grid-cols-3"
+                v-if="moreNews.length"
+                class="grid gap-4 md:gap-6 md:grid-cols-3"
             >
               <button
-                v-for="item in moreNews"
-                :key="item.id"
-                type="button"
-                class="text-left"
-                @click="goToArticle(item.id)"
+                  v-for="item in moreNews"
+                  :key="item.id"
+                  :id="item.id"
+                  type="button"
+                  class="text-left"
+                  @click="goToArticle(item.id)"
               >
-                <NewsCard :article="item" />
+                <NewsCard :article="item"/>
               </button>
             </div>
             <div v-else class="text-slate-400 text-center py-6">
@@ -309,6 +311,6 @@ const extraCount = computed(() => Math.max(galleryImages.value.length - 1, 0));
       </div>
     </div>
 
-    <Footer />
+    <Footer/>
   </section>
 </template>

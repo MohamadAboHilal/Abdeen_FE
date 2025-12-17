@@ -2,7 +2,7 @@
 import { computed } from "vue";
 
 interface NewsItem {
-  id: number;
+  id: string;
   title: string;
   category: string;
   date: string;

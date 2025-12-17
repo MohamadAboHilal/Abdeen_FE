@@ -19,7 +19,7 @@ interface TeamMember {
 }
 
 interface Blog {
-  id: number;
+  id: string;
   title: string;
   category: string;
   image: string;

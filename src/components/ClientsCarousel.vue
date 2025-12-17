@@ -153,7 +153,6 @@ onUnmounted(() => {
   window.removeEventListener("resize", reinitOnResize);
 });
 
-console.log(clients.value);
 </script>
 
 <template>

@@ -46,7 +46,7 @@ const chunk = <T>(arr: T[], size: number) =>
 const slides = computed(() => {
   // Transform blogs to NewsItem structure
   const normalizedBlogs = blogs.value.map((blog, idx) => ({
-    id: idx + 1,
+    id: blog.id,
     title: blog.title,
     category: blog.category,
     date: blog.created_at,
@@ -117,7 +117,7 @@ watch(slides, () => {
 
 // ---------- navigation ----------
 
-function goToArticle(id: number) {
+function goToArticle(id: string) {
   router.push({ name: "news-detail", params: { id } });
 }
 </script>
@@ -165,6 +165,7 @@ function goToArticle(id: number) {
                 <button
                   v-for="article in group"
                   :key="article.id"
+                  :id="article.id"
                   type="button"
                   class="text-left"
                   @click="goToArticle(article.id)"
