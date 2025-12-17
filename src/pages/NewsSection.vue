@@ -45,7 +45,7 @@ const chunk = <T>(arr: T[], size: number) =>
 
 const slides = computed(() => {
   // Transform blogs to NewsItem structure
-  const normalizedBlogs = blogs.value.map((blog, idx) => ({
+  const normalizedBlogs = blogs.value.map((blog) => ({
     id: blog.id,
     title: blog.title,
     category: blog.category,

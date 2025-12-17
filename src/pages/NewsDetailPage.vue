@@ -30,7 +30,7 @@ const allArticles = computed(() => unref(blogs));
 const route = useRoute();
 const router = useRouter();
 
-const currentId = computed<number | null>(() => {
+const currentId = computed<string | null>(() => {
   const idParam = route.params.id;
   // Try to parse id, fallback to first blog's id if missing
   if (idParam !== undefined) {
