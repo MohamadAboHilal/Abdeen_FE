@@ -177,6 +177,7 @@ onUnmounted(() => {
                   :href="client.url"
                   target="_blank"
                   rel="noopener noreferrer"
+                  class="flex flex-row justify-center"
                 >
                   <img
                     :src="client.icon"
@@ -205,6 +206,7 @@ onUnmounted(() => {
                   :href="client.url"
                   target="_blank"
                   rel="noopener noreferrer"
+                  class="flex flex-row justify-center"
                 >
                   <img
                     :src="client.icon"
@@ -233,6 +235,7 @@ onUnmounted(() => {
                   :href="client.url"
                   target="_blank"
                   rel="noopener noreferrer"
+                  class="flex flex-row justify-center"
                 >
                   <img
                     :src="client.icon"
@@ -266,6 +269,7 @@ onUnmounted(() => {
                   :href="client.url"
                   target="_blank"
                   rel="noopener noreferrer"
+                  class="flex flex-row justify-center"
                 >
                   <img
                     :src="client.icon"
@@ -294,6 +298,7 @@ onUnmounted(() => {
                   :href="client.url"
                   target="_blank"
                   rel="noopener noreferrer"
+                  class="flex flex-row justify-center"
                 >
                   <img
                     :src="client.icon"
@@ -322,6 +327,7 @@ onUnmounted(() => {
                   :href="client.url"
                   target="_blank"
                   rel="noopener noreferrer"
+                  class="flex flex-row justify-center"
                 >
                   <img
                     :src="client.icon"
