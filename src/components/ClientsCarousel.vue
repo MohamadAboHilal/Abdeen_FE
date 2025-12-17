@@ -431,28 +431,31 @@ onUnmounted(() => {
   justify-content: center;
   background-color: white;
   border-radius: 0.75rem;
-  width: 10rem;
-  height: 5rem;
+  margin-right: 1.5rem;
+
+  /* ★ Bigger base size to prevent clipping */
+  width: 11rem;
+  height: 6rem;
 }
 
 @media (min-width: 640px) {
   .client-card--small {
-    width: 11rem;
-    height: 5.5rem;
+    width: 12rem;
+    height: 6.5rem;
   }
 }
 
 @media (min-width: 768px) {
   .client-card--small {
-    width: 12rem;
-    height: 6rem;
+    width: 13rem;
+    height: 7rem;
   }
 }
 
 @media (min-width: 1024px) {
   .client-card--small {
-    width: 12.5rem;
-    height: 6.5rem;
+    width: 14rem;
+    height: 7.5rem;
   }
 }
 
