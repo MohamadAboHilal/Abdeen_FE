@@ -40,6 +40,9 @@ async function onSubmit() {
     const res = await fetch("https://api.abdeenlegal.com/api/contact_us", {
       method: "POST",
       body: formData,
+      headers: {
+        Accept: "Application/Json",
+      },
     });
 
     if (!res.ok) {

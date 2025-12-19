@@ -147,7 +147,7 @@ function goToArticle(id: string) {
         <!-- Viewport -->
         <div ref="viewportRef" class="overflow-hidden">
           <!-- Track -->
-          <div class="flex pb-4">
+          <div class="flex pb-4 gap-12">
             <!-- Each slide -->
             <div
               v-for="(group, index) in slides"
@@ -158,8 +158,8 @@ function goToArticle(id: string) {
               <div
                 :class="
                   isMobileSlide
-                    ? 'grid grid-cols-1 grid-rows-2 gap-6'
-                    : 'grid grid-cols-3 grid-rows-2 gap-6'
+                    ? 'grid grid-cols-1 grid-rows-2 gap-8'
+                    : 'grid grid-cols-3 grid-rows-2 gap-8'
                 "
               >
                 <button

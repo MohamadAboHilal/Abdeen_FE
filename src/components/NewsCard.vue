@@ -36,7 +36,7 @@ const pillClass = computed(() =>
     </div>
 
     <!-- Content -->
-    <div class="p-4 sm:p-5 flex flex-col gap-3">
+    <div class="p-4 sm:p-8 flex flex-col gap-3">
       <!-- Category pill -->
       <span
         :class="[
