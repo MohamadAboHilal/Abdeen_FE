@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { useSeoMeta, useHead } from "@unhead/vue";
+import { useHead } from "@unhead/vue";
 
 import Navbar from "../components/Navbar.vue";
 import Hero from "../pages/Hero.vue";
