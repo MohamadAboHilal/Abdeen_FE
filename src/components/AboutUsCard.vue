@@ -44,7 +44,7 @@ function goTo(index: number) {
           >
             <div class="flex items-center justify-between gap-x-3">
               <h4 class="text-2xl font-bold text-[#1D2B62]">
-                {{ c.id }}. {{ c.title }}
+                 {{ c.title }}
               </h4>
               <img :src="c.icon" :alt="c.title" class="h-10 w-10 select-none" />
             </div>
