@@ -7,6 +7,13 @@ interface Service {
   icon: string;
 }
 
+interface AboutUsItem {
+  id: number;
+  title: string;
+  description: string;
+  icon: string;
+}
+
 interface Client {
   icon: string;
   url: string;
@@ -29,6 +36,7 @@ interface Blog {
 
 interface ApiResponse {
   services: Service[];
+  aboutUs: AboutUsItem[]; // ✅ NEW
   clients: Client[];
   teamMembers: TeamMember[];
   blogs: Blog[];
@@ -36,6 +44,7 @@ interface ApiResponse {
 
 // ---- GLOBAL (singleton) state ----
 const services = ref<Service[]>([]);
+const aboutUs = ref<AboutUsItem[]>([]);
 const clients = ref<Client[]>([]);
 const teamMembers = ref<TeamMember[]>([]);
 const blogs = ref<Blog[]>([]);
@@ -76,6 +85,7 @@ export function useAppData() {
       const data = (await res.json()) as ApiResponse;
 
       services.value = data.services ?? [];
+      aboutUs.value = data.aboutUs ?? []; // ✅ NEW
       clients.value = data.clients ?? [];
       teamMembers.value = data.teamMembers ?? [];
       blogs.value = data.blogs ?? [];
@@ -92,6 +102,7 @@ export function useAppData() {
   return {
     // readonly so nobody mutates from components
     services: readonly(services),
+    aboutUs: readonly(aboutUs), // ✅ NEW
     clients: readonly(clients),
     teamMembers: readonly(teamMembers),
     blogs: readonly(blogs),

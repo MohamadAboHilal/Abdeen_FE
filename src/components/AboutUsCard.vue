@@ -1,61 +1,96 @@
 <script setup lang="ts">
-import oil from "../assets/Abden Icon/Oil Sector.svg";
-import banking from "../assets/Abden Icon/Banking Sector.svg";
-import islamic from "../assets/Abden Icon/islamic finance.svg";
-import contracts from "../assets/Abden Icon/International Contracts.svg";
-import { computed } from "vue";
+import { computed, ref } from "vue";
+import { useAppData } from "../composables/useAppData";
 
-import { useI18n } from "vue-i18n";
-const { t } = useI18n();
+const { aboutUs } = useAppData();
 
-const cards = computed(() => [
-  {
-    id: 1,
-    title: t("cards.oilSector.title"),
-    desc: t("cards.oilSector.desc"),
-    icon: oil,
-  },
-  {
-    id: 2,
-    title: t("cards.bankingSector.title"),
-    desc: t("cards.bankingSector.desc"),
-    icon: banking,
-  },
-  {
-    id: 3,
-    title: t("cards.islamicFinance.title"),
-    desc: t("cards.islamicFinance.desc"),
-    icon: islamic,
-  },
-  {
-    id: 4,
-    title: t("cards.internationalContracts.title"),
-    desc: t("cards.internationalContracts.desc"),
-    icon: contracts,
-  },
-]);
+const ITEMS_PER_SLIDE = 4;
+const currentSlide = ref(0);
+
+const totalSlides = computed(() =>
+  Math.max(1, Math.ceil(aboutUs.value.length / ITEMS_PER_SLIDE))
+);
+
+const slideItems = computed(() => {
+  const start = currentSlide.value * ITEMS_PER_SLIDE;
+  return aboutUs.value.slice(start, start + ITEMS_PER_SLIDE);
+});
+
+function next() {
+  currentSlide.value = (currentSlide.value + 1) % totalSlides.value;
+}
+
+function prev() {
+  currentSlide.value =
+    (currentSlide.value - 1 + totalSlides.value) % totalSlides.value;
+}
+
+function goTo(index: number) {
+  currentSlide.value = index;
+}
 </script>
 
 <template>
-  <div class="grid gap-6 md:grid-cols-2">
-    <article
-      v-for="c in cards"
-      :key="c.id"
-      class="relative rounded-2xl bg-white p-6 md:p-8 ring-black/5 shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition"
-    >
-      <!-- top-right icon -->
+  <section class="w-full">
+    <div class="relative">
+      <!-- Slide -->
+      <div class="transition-all duration-300">
+        <!-- 🔹 ONLY grid classes applied, card untouched -->
+        <div class="grid gap-6 md:grid-cols-2 place-items-stretch">
+          <article
+            v-for="c in slideItems"
+            :key="c.id"
+            class="relative rounded-2xl bg-white p-6 md:p-8 ring-black/5 shadow-[0_10px_30px_rgba(0,0,0,0.06)] transition"
+          >
+            <div class="flex items-center justify-between gap-x-3">
+              <h4 class="text-2xl font-bold text-[#1D2B62]">
+                {{ c.id }}. {{ c.title }}
+              </h4>
+              <img :src="c.icon" :alt="c.title" class="h-10 w-10 select-none" />
+            </div>
 
-      <div class="flex items-center justify-between gap-x-3">
-        <h4 class="text-2xl font-bold text-[#1D2B62]">
-          {{ c.id }}. {{ c.title }}
-        </h4>
-        <img :src="c.icon" :alt="c.title" class="h-10 w-10 select-none" />
+            <p class="mt-4 text-lg leading-relaxed text-slate-700">
+              {{ c.description }}
+            </p>
+          </article>
+        </div>
       </div>
 
-      <!-- description -->
-      <p class="mt-4 text-lg leading-relaxed text-slate-700">
-        {{ c.desc }}
-      </p>
-    </article>
-  </div>
+      <!-- Controls row: Prev + Dots + Next -->
+      <div class="flex items-center justify-center gap-4 mt-6">
+        <button
+          type="button"
+          @click="prev"
+          class="bg-white text-[#1D2B62] shadow-lg rounded-full w-10 h-10 flex items-center justify-center hover:opacity-90 transition"
+          aria-label="Previous slide"
+        >
+          ‹
+        </button>
+
+        <!-- Dots -->
+        <div class="flex items-center justify-center gap-2">
+          <button
+            v-for="(_, i) in totalSlides"
+            :key="i"
+            type="button"
+            @click="goTo(i)"
+            class="h-2.5 rounded-full transition-all"
+            :class="
+              i === currentSlide ? 'w-8 bg-[#ECC06F]' : 'w-2.5 bg-slate-300'
+            "
+            :aria-label="`Go to slide ${i + 1}`"
+          />
+        </div>
+
+        <button
+          type="button"
+          @click="next"
+          class="bg-white text-[#1D2B62] shadow-lg rounded-full w-10 h-10 flex items-center justify-center hover:opacity-90 transition"
+          aria-label="Next slide"
+        >
+          ›
+        </button>
+      </div>
+    </div>
+  </section>
 </template>

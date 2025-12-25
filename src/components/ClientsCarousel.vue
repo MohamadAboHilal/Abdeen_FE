@@ -152,7 +152,6 @@ onUnmounted(() => {
   killTimelines();
   window.removeEventListener("resize", reinitOnResize);
 });
-
 </script>
 
 <template>
@@ -255,7 +254,15 @@ onUnmounted(() => {
         </div>
 
         <!-- BOTTOM ROW - infinite scroll, shifted like brick wall -->
-        <div class="clients-row clients-row--shifted py-4">
+        <div
+          :class="[
+            'clients-row',
+            locale === 'ar'
+              ? 'clients-row--shifted-rtl'
+              : 'clients-row--shifted',
+            'py-4',
+          ]"
+        >
           <div ref="bottomMarqueeRef" class="clients-marquee pb-8">
             <!-- First sequence -->
             <div class="clients-marquee__inner">
@@ -361,6 +368,7 @@ onUnmounted(() => {
 }
 
 /* Bottom row: brick-wall look → slightly shifted to the right */
+
 .clients-row--shifted {
   margin-left: 0;
 }
@@ -368,6 +376,16 @@ onUnmounted(() => {
 @media (min-width: 768px) {
   .clients-row--shifted {
     margin-left: 4rem;
+  }
+}
+
+.clients-row--shifted-rtl {
+  margin-right: 0;
+}
+
+@media (min-width: 768px) {
+  .clients-row--shifted-rtl {
+    margin-right: 4rem;
   }
 }
 
