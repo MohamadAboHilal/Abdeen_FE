@@ -6,8 +6,17 @@ import NewsDetailPage from "../pages/NewsDetailPage.vue";
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: "/", name: "home", component: Home },
-    { path: "/news/:id", name: "news-detail", component: NewsDetailPage },
+    // Redirect root to default language
+    { path: "/", redirect: "/en/" },
+    // Language-prefixed routes
+    { path: "/:lang(en|ar)/", name: "home", component: Home },
+    {
+      path: "/:lang(en|ar)/news/:id",
+      name: "news-detail",
+      component: NewsDetailPage,
+    },
+    // Optionally, catch-all for 404s
+    // { path: '/:pathMatch(.*)*', redirect: '/en' },
   ],
 
   scrollBehavior(to) {

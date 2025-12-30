@@ -21,8 +21,8 @@ const { t, locale } = useI18n();
 const { settings } = useSettings();
 
 function goToSection(hash: string) {
-  // Always go home first
-  router.push({ path: "/", hash });
+  // Always go home first with trailing slash for language
+  router.push({ path: `/${locale.value}/`, hash });
   activeLink.value = hash;
 }
 
@@ -45,6 +45,11 @@ function toggleMobileMenu() {
 function switchLang(newLang: string) {
   locale.value = newLang;
   localStorage.setItem("locale", newLang);
+  // Get current route
+  const { path, hash, query } = router.currentRoute.value;
+  // Replace the language in the path
+  const newPath = path.replace(/^\/(en|ar)/, `/${newLang}`);
+  router.push({ path: newPath, hash, query });
 }
 </script>
 
