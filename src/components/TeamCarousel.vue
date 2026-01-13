@@ -17,6 +17,14 @@ import TeamCard from "./TeamCard.vue";
 
 import { useAppData } from "../composables/useAppData";
 
+import { useI18n } from "vue-i18n";
+
+const { locale } = useI18n();
+
+const emblaDirection = computed<EmblaOptionsType["direction"]>(() =>
+  locale.value === "ar" ? "rtl" : "ltr"
+);
+
 const { teamMembers } = useAppData();
 
 // responsive chunking
@@ -48,13 +56,14 @@ const slides = computed(() =>
 const viewportRef = ref<HTMLElement | null>(null);
 let embla: EmblaCarouselType | null = null;
 
-const options: EmblaOptionsType = {
+const options = computed<EmblaOptionsType>(() => ({
   loop: true,
   align: "start",
-  containScroll: "keepSnaps", // <-- important to avoid trimmed snaps on small screens
+  containScroll: "keepSnaps",
   slidesToScroll: 1,
   dragFree: false,
-};
+  direction: emblaDirection.value, // ✅ FIX
+}));
 
 let resizeT: number | null = null;
 const handleResize = () => {
@@ -71,9 +80,11 @@ const handleResize = () => {
 
 onMounted(() => {
   if (!viewportRef.value) return;
-  embla = EmblaCarousel(viewportRef.value, options, [
+
+  embla = EmblaCarousel(viewportRef.value, options.value, [
     Autoplay({ delay: 3500, stopOnInteraction: false }),
   ]);
+
   window.addEventListener("resize", handleResize);
 });
 
@@ -86,12 +97,26 @@ watch(slides, async () => {
   await nextTick();
   embla?.reInit();
 });
+
+watch(emblaDirection, async () => {
+  await nextTick();
+  embla?.destroy(); // ✅ REQUIRED for RTL ↔ LTR
+  if (!viewportRef.value) return;
+
+  embla = EmblaCarousel(viewportRef.value, options.value, [
+    Autoplay({ delay: 3500, stopOnInteraction: false }),
+  ]);
+});
 </script>
 
 <template>
   <section class="w-full">
     <!-- viewport (padding lives here) -->
-    <div ref="viewportRef" class="overflow-hidden px-4 sm:px-2 lg:px-8 py-6">
+    <div
+      ref="viewportRef"
+      class="overflow-hidden px-4 sm:px-2 lg:px-8 py-6"
+      :dir="emblaDirection"
+    >
       <!-- track: NO gap; use gutter pattern -->
       <div class="flex -mx-3 pb-2" :key="cardsPerSlide">
         <!-- each slide is exactly one viewport width -->
